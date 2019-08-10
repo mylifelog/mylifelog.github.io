@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://mylifelog.github.io</id>
-    <title>Gridea</title>
-    <updated>2019-08-10T10:53:38.257Z</updated>
+    <title>静水流深</title>
+    <updated>2019-08-10T10:59:53.550Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://mylifelog.github.io"/>
     <link rel="self" href="https://mylifelog.github.io/atom.xml"/>
-    <subtitle>温故而知新</subtitle>
+    <subtitle>闷声学大习！</subtitle>
     <logo>https://mylifelog.github.io/images/avatar.png</logo>
     <icon>https://mylifelog.github.io/favicon.ico</icon>
-    <rights>All rights reserved 2019, Gridea</rights>
+    <rights>All rights reserved 2019, 静水流深</rights>
     <entry>
         <title type="html"><![CDATA[Hello Gridea]]></title>
         <id>https://mylifelog.github.io/post/hello-gridea</id>
