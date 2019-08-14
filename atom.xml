@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://mylifelog.github.io</id>
     <title>静水流深</title>
-    <updated>2019-08-14T11:54:06.210Z</updated>
+    <updated>2019-08-14T12:06:26.508Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://mylifelog.github.io"/>
     <link rel="self" href="https://mylifelog.github.io/atom.xml"/>
@@ -16,9 +16,13 @@
         <link href="https://mylifelog.github.io/post/li-hong-yi-lesslessji-qi-xue-xi-greatergreater-xue-xi-bi-ji-hw1">
         </link>
         <updated>2019-08-14T09:41:49.000Z</updated>
+        <summary type="html"><![CDATA[<h2 id="1作业内容">1.作业内容：</h2>
+<p>本次作业使用豐原站的觀測記錄，分成 train set 跟 test set，train set 是豐原站每個月的前20天所有資料，test set則是從豐原站剩下的資料中取樣出來。</p>
+]]></summary>
         <content type="html"><![CDATA[<h2 id="1作业内容">1.作业内容：</h2>
-<p>本次作业使用豐原站的觀測記錄，分成 train set 跟 test set，train set 是豐原站每個月的前20天所有資料，test set則是從豐原站剩下的資料中取樣出來。<br>
-train.csv:每個月前20天每個小時的氣象資料(每小時有18種測資)。共12個月。 test.csv:從剩下的資料當中取樣出連續的10小時為一筆，前九小時的所有觀測數據當作feature，第十小時的PM2.5當作answer。一共取出240筆不重複的 test data，請根據feauure預測這240筆的PM2.5。</p>
+<p>本次作业使用豐原站的觀測記錄，分成 train set 跟 test set，train set 是豐原站每個月的前20天所有資料，test set則是從豐原站剩下的資料中取樣出來。</p>
+<!-- more -->
+<p>train.csv:每個月前20天每個小時的氣象資料(每小時有18種測資)。共12個月。 test.csv:從剩下的資料當中取樣出連續的10小時為一筆，前九小時的所有觀測數據當作feature，第十小時的PM2.5當作answer。一共取出240筆不重複的 test data，請根據feauure預測這240筆的PM2.5。</p>
 <h2 id="2思路分析">2.思路分析：</h2>
 <p>由于课程要求按线性回归处理，对该问题，分三步：<br>
 step1：模型假设，选择模型框架（线性模型）<br>

@@ -4,7 +4,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>静水流深</title>
 <meta name="description" content="闷声学大习！" />
-<link rel="shortcut icon" href="https://mylifelog.github.io/favicon.ico?v=1565783642483">
+<link rel="shortcut icon" href="https://mylifelog.github.io/favicon.ico?v=1565784382607">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
 <link href="https://cdn.remixicon.com/releases/v1.3.1/remixicon.css" rel="stylesheet">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
@@ -24,7 +24,7 @@
       <div class="flex lg:block p-4 lg:px-0 items-center fixed lg:static lg:block top-0 right-0 left-0 bg-white z-50">
         <i class="remixicon-menu-2-line lg:mt-4 text-2xl cursor-pointer animated fadeIn" onclick="openMenu()"></i>
         <a href="https://mylifelog.github.io">
-          <img class="animated fadeInLeft avatar rounded-lg mx-4 lg:mt-32 lg:mx-0 mt-0 lg:w-24 lg:h-24 w-12 w-12" src="https://mylifelog.github.io/images/avatar.png?v=1565783642483" alt="">
+          <img class="animated fadeInLeft avatar rounded-lg mx-4 lg:mt-32 lg:mx-0 mt-0 lg:w-24 lg:h-24 w-12 w-12" src="https://mylifelog.github.io/images/avatar.png?v=1565784382607" alt="">
         </a>
         <h1 class="animated fadeInLeft lg:text-4xl font-extrabold lg:mt-8 mt-0 text-xl" style="animation-delay: 0.2s">静水流深</h1>
       </div>
@@ -106,10 +106,13 @@
           2019-08-14 / 11 min read
         </div>
         
+          <img class="post-feature-image rounded-lg mx-auto my-4" src="https://pics-1252142997.cos.ap-chengdu.myqcloud.com/chapter6-3.png" alt="">
+        
         <div class="post-content yue">
           <h2 id="1作业内容">1.作业内容：</h2>
-<p>本次作业使用豐原站的觀測記錄，分成 train set 跟 test set，train set 是豐原站每個月的前20天所有資料，test set則是從豐原站剩下的資料中取樣出來。<br>
-train.csv:每個月前20天每個小時的氣象資料(每小時有18種測資)。共12個月。 test.csv:從剩下的資料當中取樣出連續的10小時為一筆，前九小時的所有觀測數據當作feature，第十小時的PM2.5當作answer。一共取出240筆不重複的 test data，請根據feauure預測這240筆的PM2.5。</p>
+<p>本次作业使用豐原站的觀測記錄，分成 train set 跟 test set，train set 是豐原站每個月的前20天所有資料，test set則是從豐原站剩下的資料中取樣出來。</p>
+<!-- more -->
+<p>train.csv:每個月前20天每個小時的氣象資料(每小時有18種測資)。共12個月。 test.csv:從剩下的資料當中取樣出連續的10小時為一筆，前九小時的所有觀測數據當作feature，第十小時的PM2.5當作answer。一共取出240筆不重複的 test data，請根據feauure預測這240筆的PM2.5。</p>
 <h2 id="2思路分析">2.思路分析：</h2>
 <p>由于课程要求按线性回归处理，对该问题，分三步：<br>
 step1：模型假设，选择模型框架（线性模型）<br>
