@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://mylifelog.github.io</id>
     <title>静水流深</title>
-    <updated>2019-09-09T01:19:53.553Z</updated>
+    <updated>2019-09-09T01:26:41.772Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://mylifelog.github.io"/>
     <link rel="self" href="https://mylifelog.github.io/atom.xml"/>
@@ -10,6 +10,87 @@
     <logo>https://mylifelog.github.io/images/avatar.png</logo>
     <icon>https://mylifelog.github.io/favicon.ico</icon>
     <rights>All rights reserved 2019, 静水流深</rights>
+    <entry>
+        <title type="html"><![CDATA[Android NDK层校验签名（一）]]></title>
+        <id>https://mylifelog.github.io/post/android-ndk-ceng-xiao-yan-qian-ming-yi</id>
+        <link href="https://mylifelog.github.io/post/android-ndk-ceng-xiao-yan-qian-ming-yi">
+        </link>
+        <updated>2019-09-09T01:07:49.000Z</updated>
+        <content type="html"><![CDATA[<p>为防止别有用心的人将我们的apk文件修改后重新发布，我们需要对apk文件的证书进行校验。</p>
+<p>具体原理是，在native层通过jni接口查找Java层的签名相关的方法，进而调用计算出apk的证书MD5。</p>
+<p>具体代码如下：</p>
+<pre><code class="language-cpp">    //获取到Context
+    jobject context= jniGetApplication(env);
+    jclass  activity = (*env)-&gt;GetObjectClass(env,context);
+    // 得到 getPackageManager 方法的 ID
+    jmethodID methodID_func = (*env)-&gt;GetMethodID(env,activity, &quot;getPackageManager&quot;, &quot;()Landroid/content/pm/PackageManager;&quot;);
+    // 获得PackageManager对象
+    jobject packageManager = (*env)-&gt;CallObjectMethod(env,context,methodID_func);
+    jclass packageManagerclass = (*env)-&gt;GetObjectClass(env,packageManager);
+    //得到 getPackageName 方法的 ID
+    jmethodID methodID_pack = (*env)-&gt;GetMethodID(env,activity,&quot;getPackageName&quot;, &quot;()Ljava/lang/String;&quot;);
+    //获取包名
+    jstring name_str = (jstring)((*env)-&gt;CallObjectMethod(env,context, methodID_pack));
+    // 得到 getPackageInfo 方法的 ID
+    jmethodID methodID_pm = (*env)-&gt;GetMethodID(env,packageManagerclass,&quot;getPackageInfo&quot;, &quot;(Ljava/lang/String;I)Landroid/content/pm/PackageInfo;&quot;);
+    // 获得应用包的信息
+    jobject package_info = (*env)-&gt;CallObjectMethod(env,packageManager, methodID_pm, name_str, 64);
+    // 获得 PackageInfo 类
+    jclass package_infoclass = (*env)-&gt;GetObjectClass(env,package_info);
+    // 获得签名数组属性的 ID
+    jfieldID fieldID_signatures = (*env)-&gt;GetFieldID(env,package_infoclass,&quot;signatures&quot;, &quot;[Landroid/content/pm/Signature;&quot;);
+    // 得到签名数组，待修改
+    jobject signatur = (*env)-&gt;GetObjectField(env,package_info, fieldID_signatures);
+    jobjectArray  signatures = (jobjectArray)(signatur);
+    // 得到签名
+    jobject signature = (*env)-&gt;GetObjectArrayElement(env,signatures, 0);
+    // 获得 Signature 类，待修改
+    jclass signature_clazz = (*env)-&gt;GetObjectClass(env,signature);
+    //---获得签名byte数组
+    jmethodID tobyte_methodId = (*env)-&gt;GetMethodID(env,signature_clazz, &quot;toByteArray&quot;, &quot;()[B&quot;);
+    jbyteArray signature_byte = (jbyteArray) (*env)-&gt;CallObjectMethod(env,signature, tobyte_methodId);
+    //把byte数组转成流
+    jclass byte_array_input_class=(*env)-&gt;FindClass(env,&quot;java/io/ByteArrayInputStream&quot;);
+    jmethodID init_methodId=(*env)-&gt;GetMethodID(env,byte_array_input_class,&quot;&lt;init&gt;&quot;,&quot;([B)V&quot;);
+    jobject byte_array_input=(*env)-&gt;NewObject(env,byte_array_input_class,init_methodId,signature_byte);
+    //实例化X.509
+    jclass certificate_factory_class=(*env)-&gt;FindClass(env,&quot;java/security/cert/CertificateFactory&quot;);
+    jmethodID certificate_methodId=(*env)-&gt;GetStaticMethodID(env,certificate_factory_class,&quot;getInstance&quot;,&quot;(Ljava/lang/String;)Ljava/security/cert/CertificateFactory;&quot;);
+    jstring x_509_jstring=(*env)-&gt;NewStringUTF(env,&quot;X.509&quot;);
+    jobject cert_factory=(*env)-&gt;CallStaticObjectMethod(env,certificate_factory_class,certificate_methodId,x_509_jstring);
+    //certFactory.generateCertificate(byteIn);
+    jmethodID certificate_factory_methodId=(*env)-&gt;GetMethodID(env,certificate_factory_class,&quot;generateCertificate&quot;,(&quot;(Ljava/io/InputStream;)Ljava/security/cert/Certificate;&quot;));
+    jobject x509_cert=(*env)-&gt;CallObjectMethod(env,cert_factory,certificate_factory_methodId,byte_array_input);
+
+    jclass x509_cert_class=(*env)-&gt;GetObjectClass(env,x509_cert);
+    jmethodID x509_cert_methodId=(*env)-&gt;GetMethodID(env,x509_cert_class,&quot;getEncoded&quot;,&quot;()[B&quot;);
+    jbyteArray cert_byte=(jbyteArray)(*env)-&gt;CallObjectMethod(env,x509_cert,x509_cert_methodId);
+
+    //MessageDigest.getInstance(&quot;SHA1&quot;)
+    jclass message_digest_class=(*env)-&gt;FindClass(env,&quot;java/security/MessageDigest&quot;);
+    jmethodID methodId=(*env)-&gt;GetStaticMethodID(env,message_digest_class,&quot;getInstance&quot;,&quot;(Ljava/lang/String;)Ljava/security/MessageDigest;&quot;);
+    //如果取SHA1则输入SHA1
+    //jstring sha1_jstring=(*env)-&gt;NewStringUTF(env,&quot;SHA1&quot;);
+    jstring sha1_jstring=(*env)-&gt;NewStringUTF(env,&quot;MD5&quot;);
+    jobject sha1_digest=(*env)-&gt;CallStaticObjectMethod(env,message_digest_class,methodId,sha1_jstring);
+    //sha1.digest (certByte)
+    methodId=(*env)-&gt;GetMethodID(env,message_digest_class,&quot;digest&quot;,&quot;([B)[B&quot;);
+    jbyteArray sha1_byte=(jbyteArray)(*env)-&gt;CallObjectMethod(env,sha1_digest,methodId,cert_byte);
+    //toHexString
+    jsize array_size=(*env)-&gt;GetArrayLength(env,sha1_byte);
+    jbyte* sha1 =(*env)-&gt;GetByteArrayElements(env,sha1_byte,NULL);
+    char hex_sha[array_size*2+1];
+    int i;
+    for (i = 0;i&lt;array_size;++i) {
+        hex_sha[2*i]=HexCode[((unsigned char)sha1[i])/16];
+        hex_sha[2*i+1]=HexCode[((unsigned char)sha1[i])%16];
+    }
+    hex_sha[array_size*2]='\0';
+</code></pre>
+<p>但是这个方法有个缺点，如果别人在Java层重写一下关键的方法，对获取证书内容的部分篡改，便会使我们的校验失败。具体可以看github上的kstool项目和MT管理器移除证书检验部分。</p>
+<p>针对这个情况，我们在下一篇讲如何应对。</p>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[李宏毅《机器学习》学习笔记 HW1]]></title>
         <id>https://mylifelog.github.io/post/li-hong-yi-lesslessji-qi-xue-xi-greatergreater-xue-xi-bi-ji-hw1</id>
