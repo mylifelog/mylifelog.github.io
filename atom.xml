@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://mylifelog.github.io</id>
     <title>静水流深</title>
-    <updated>2019-09-09T02:02:32.317Z</updated>
+    <updated>2019-09-09T02:02:58.518Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://mylifelog.github.io"/>
     <link rel="self" href="https://mylifelog.github.io/atom.xml"/>
@@ -1110,7 +1110,10 @@ void getApkSignMD5(char* apkPath, char* result)
         <link href="https://mylifelog.github.io/post/android-ndk-ceng-xiao-yan-qian-ming-yi">
         </link>
         <updated>2019-09-09T01:07:49.000Z</updated>
+        <summary type="html"><![CDATA[<p>为防止别有用心的人将我们的apk文件修改后重新发布，我们需要对apk文件的证书进行校验。</p>
+]]></summary>
         <content type="html"><![CDATA[<p>为防止别有用心的人将我们的apk文件修改后重新发布，我们需要对apk文件的证书进行校验。</p>
+<!-- more -->
 <p>具体原理是，在native层通过jni接口查找Java层的签名相关的方法，进而调用计算出apk的证书MD5。</p>
 <p>具体代码如下：</p>
 <pre><code class="language-cpp">    //获取到Context
