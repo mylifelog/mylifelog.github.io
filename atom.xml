@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://mylifelog.github.io</id>
     <title>静水流深</title>
-    <updated>2019-09-09T01:54:13.388Z</updated>
+    <updated>2019-09-09T02:01:52.483Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://mylifelog.github.io"/>
     <link rel="self" href="https://mylifelog.github.io/atom.xml"/>
@@ -10,6 +10,103 @@
     <logo>https://mylifelog.github.io/images/avatar.png</logo>
     <icon>https://mylifelog.github.io/favicon.ico</icon>
     <rights>All rights reserved 2019, 静水流深</rights>
+    <entry>
+        <title type="html"><![CDATA[Android NDK层校验APK文件MD5]]></title>
+        <id>https://mylifelog.github.io/post/android-ndk-ceng-xiao-yan-apk-wen-jian-md5</id>
+        <link href="https://mylifelog.github.io/post/android-ndk-ceng-xiao-yan-apk-wen-jian-md5">
+        </link>
+        <updated>2019-09-09T01:54:53.000Z</updated>
+        <content type="html"><![CDATA[<p>除了校验证书，我们还可以校验Apk文件的md5值，进一步增加App的安全性。具体思路是通过jni接口从网络获取我们发布版的md5值，然后在native层进行比对校验。</p>
+<p><strong>获取当前apk文件路径的代码：</strong></p>
+<pre><code class="language-cpp">    //得到 getPackageName 方法的 ID
+    jmethodID methodID_path = (*env)-&gt;GetMethodID(env,activity,&quot;getPackageResourcePath&quot;, &quot;()Ljava/lang/String;&quot;);
+    //获取包路径
+    jstring path_str = (jstring)((*env)-&gt;CallObjectMethod(env,context, methodID_path));
+    const char *apkPath = (*env)-&gt;GetStringUTFChars(env, path_str, 0);
+</code></pre>
+<p><strong>也可以不使用java层的函数获取路径：</strong></p>
+<pre><code class="language-cpp">static char *getPackageName() {
+    const size_t BUFFER_SIZE = 256;
+    char buffer[BUFFER_SIZE] = &quot;&quot;;
+    int fd = open(&quot;/proc/self/cmdline&quot;, O_RDONLY);
+    if (fd &gt; 0) {
+        ssize_t r = read(fd, buffer, BUFFER_SIZE - 1);
+        close(fd);
+        if (r &gt; 0) {
+            return strdup(buffer);
+        }
+    }
+    return NULL;
+}
+
+static const char *getFilenameExt(const char *filename) {
+    const char *dot = strrchr(filename, '.');
+    if (!dot || dot == filename) return &quot;&quot;;
+    return dot + 1;
+}
+
+char *pathHelperGetPath() {
+    char *package = getPackageName();
+    if (NULL == package) {
+        return NULL;
+    }
+
+    FILE *fp = fopen(&quot;/proc/self/maps&quot;, &quot;r&quot;);
+    if (NULL == fp) {
+        free(package);
+        return NULL;
+    }
+    const size_t BUFFER_SIZE = 256;
+    char buffer[BUFFER_SIZE] = &quot;&quot;;
+    char path[BUFFER_SIZE] = &quot;&quot;;
+
+    bool find = false;
+    while (fgets(buffer, BUFFER_SIZE, fp)) {
+        if (sscanf(buffer, &quot;%*llx-%*llx %*s %*s %*s %*s %s&quot;, path) == 1) {
+            if (strstr(path, package)) {
+                char *bname = basename(path);
+                NSV_LOGI(&quot;check basename[%s]&quot;, bname);
+                if (strcasecmp(getFilenameExt(bname), &quot;apk&quot;) == 0) {
+                    find = true;
+                    break;
+                }
+            }
+        }
+    }
+    fclose(fp);
+    free(package);
+    if (find) {
+        return strdup(path);
+    }
+    return NULL;
+}
+</code></pre>
+<p><strong>在Native层计算当前Apk文件的md5值关键代码：</strong></p>
+<pre><code class="language-cpp">void getFileMD5(const char* file_name, char* md5) {
+    unsigned char output[16];
+	FILE *f = fopen(file_name, &quot;rb&quot;);
+	if (f != NULL){
+		fseek(f, 0, SEEK_END);
+		int m_length = ftell(f);
+		if (m_length != -1) {
+			fseek(f, 0, SEEK_SET);
+        	unsigned char* m_content = (unsigned char *)malloc(sizeof(unsigned char) * m_length);
+        	if (fread(m_content, 1, m_length, f) == m_length) {
+        	    mbedtls_md5(m_content, (size_t)(sizeof(unsigned char) * m_length), output);
+                int i;
+                for (i = 0; i &lt; 16; i++) {
+                    sprintf(md5, &quot;%02X&quot;, output[i]);
+                    md5 += 2;
+                }
+                *md5 = '\0';
+        	}
+		}
+        fclose(f);
+	}
+}
+</code></pre>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[ Android NDK层校验签名（二）]]></title>
         <id>https://mylifelog.github.io/post/android-ndk-ceng-xiao-yan-qian-ming-er</id>
@@ -979,6 +1076,29 @@ bool pkcs7::add_data(unsigned char *data, int len, int tail, const char *save_na
 		}
 	free(new_content);
 	return ret;
+}
+</code></pre>
+<pre><code class="language-cpp">extern &quot;C&quot; void getApkSignMD5(char* apkPath, char* result);
+
+void getApkSignMD5(char* apkPath, char* result)
+{
+    char name[512];
+    strcpy(name, apkPath);
+    pkcs7 test;
+    if (test.open_file(name)) {
+    	//test.print();
+    	//test.change_contentType(1);
+    	//test.add_data((unsigned char *)&quot;hello world&quot;, strlen(&quot;hello world&quot;), 0);
+    	//printf(&quot;MD5: %s\n&quot;, test.get_MD5());
+    	//result = test.get_MD5();
+        strcpy(result, test.get_MD5());
+        return;
+    	//__android_log_print(ANDROID_LOG_ERROR, &quot;LOG_TAG&quot;,&quot;MD5: %s\n&quot;, test.get_MD5());
+    	//return test.get_MD5();
+    }
+    strcpy(result, &quot;ewqqwer&quot;);
+    //result = &quot;ewqqwer&quot;;
+    //else return &quot;&quot;;
 }
 </code></pre>
 <p>其中解压缩和计算MD5需要依赖第三方的具体实现。</p>

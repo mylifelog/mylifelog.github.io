@@ -22,7 +22,7 @@
 
   </head>
   <body>
-    <div class="main px-4 flex flex-col lg:flex-row">
+    <div id="app" class="main px-4 flex flex-col lg:flex-row">
       <div id="sidebar" class="sidebar-wrapper lg:static lg:w-1/4">
   <div class="lg:sticky top-0">
     <div class="sidebar-content">
@@ -36,29 +36,9 @@
       
         <div class="animated fadeInLeft" style="animation-delay: 0.4s">
           <p class="my-4 text-gray-600 font-light hidden lg:block">
-            闷声学大习！
+            文章目录
           </p>
-          <div class="animated fadeInLeft social-container hidden lg:block" style="animation-delay: 0.6s">
-            
-              
-            
-              
-            
-              
-            
-              
-            
-              
-            
-              
-            
-              
-            
-              
-            
-              
-            
-              
+          <div class="toc-container hidden lg:block">
             
           </div>
         </div>
@@ -103,112 +83,150 @@
 </div>
 <div class="mask" onclick="closeMenu()">
 </div>
-      <div class="content-wrapper py-32 lg:p-8 lg:w-3/4">
-        <h2 class="latest-article text-lg text-gray-700 mb-8">
-          <i class="remixicon-article-line"></i>
-          最新文章
-        </h2>
+      <div class="content-wrapper py-32 lg:p-8 lg:w-3/4 post-detail animated fadeIn">
+        <h1 class="text-3xl font-bold lg:mt-16">Android NDK层校验APK文件MD5</h1>
+        <div class="text-sm text-gray-700 lg:my-8">
+          2019-09-09 / 2 min read
+        </div>
         
-  <section class="post-item md:flex pb-12 animated fadeIn" :style="{ 'animation-delay': `${0 * 0.2}s` }">
-    
-      <a href="https://mylifelog.github.io/post/android-ndk-ceng-xiao-yan-apk-wen-jian-md5" class="feature-image-wrapper bg-gray-100 rounded-lg flex-shrink-0 mr-8 w-full h-56 h-32 md:w-56 md:h-40">
-        <div class="post-feature-image lazy w-full h-56 h-32 md:w-56 md:h-40" data-bg="'https://mylifelog.github.io/post-images/android-ndk-ceng-xiao-yan-apk-wen-jian-md5.jpg'">
-        </div>
-      </a>
-    
-    <div class="content">
-      <a href="https://mylifelog.github.io/post/android-ndk-ceng-xiao-yan-apk-wen-jian-md5">
-        <h2 class="post-title text-xl font-extrabold mt-5 md:mt-0">Android NDK层校验APK文件MD5</h2>
-      </a>
-      <div class="post-abstract text-gray-700 font-light my-4">
+          <img class="post-feature-image rounded-lg mx-auto my-4" src="https://mylifelog.github.io/post-images/android-ndk-ceng-xiao-yan-apk-wen-jian-md5.jpg" alt="">
         
-      </div>
-      <div class="text-gray-400 text-sm font-light">2019-09-09 / 2 min read</div>
-    </div>
-  </section>
+        <div class="post-content yue">
+          <p>除了校验证书，我们还可以校验Apk文件的md5值，进一步增加App的安全性。具体思路是通过jni接口从网络获取我们发布版的md5值，然后在native层进行比对校验。</p>
+<p><strong>获取当前apk文件路径的代码：</strong></p>
+<pre><code class="language-cpp">    //得到 getPackageName 方法的 ID
+    jmethodID methodID_path = (*env)-&gt;GetMethodID(env,activity,&quot;getPackageResourcePath&quot;, &quot;()Ljava/lang/String;&quot;);
+    //获取包路径
+    jstring path_str = (jstring)((*env)-&gt;CallObjectMethod(env,context, methodID_path));
+    const char *apkPath = (*env)-&gt;GetStringUTFChars(env, path_str, 0);
+</code></pre>
+<p><strong>也可以不使用java层的函数获取路径：</strong></p>
+<pre><code class="language-cpp">static char *getPackageName() {
+    const size_t BUFFER_SIZE = 256;
+    char buffer[BUFFER_SIZE] = &quot;&quot;;
+    int fd = open(&quot;/proc/self/cmdline&quot;, O_RDONLY);
+    if (fd &gt; 0) {
+        ssize_t r = read(fd, buffer, BUFFER_SIZE - 1);
+        close(fd);
+        if (r &gt; 0) {
+            return strdup(buffer);
+        }
+    }
+    return NULL;
+}
 
-  <section class="post-item md:flex pb-12 animated fadeIn" :style="{ 'animation-delay': `${1 * 0.2}s` }">
-    
-    <div class="content">
-      <a href="https://mylifelog.github.io/post/android-ndk-ceng-xiao-yan-qian-ming-er">
-        <h2 class="post-title text-xl font-extrabold mt-5 md:mt-0"> Android NDK层校验签名（二）</h2>
-      </a>
-      <div class="post-abstract text-gray-700 font-light my-4">
-        <p>针对kstools和MT管理器等破坏我们签名校验的手段，我们需要采取新的措施。这些方法的原理都是hook应用的pms服务，拦截其获取真正签名的方法，然后返回让我们误以为真的签名信息。</p>
+static const char *getFilenameExt(const char *filename) {
+    const char *dot = strrchr(filename, '.');
+    if (!dot || dot == filename) return &quot;&quot;;
+    return dot + 1;
+}
 
-      </div>
-      <div class="text-gray-400 text-sm font-light">2019-09-09 / 16 min read</div>
-    </div>
-  </section>
+char *pathHelperGetPath() {
+    char *package = getPackageName();
+    if (NULL == package) {
+        return NULL;
+    }
 
-  <section class="post-item md:flex pb-12 animated fadeIn" :style="{ 'animation-delay': `${2 * 0.2}s` }">
-    
-      <a href="https://mylifelog.github.io/post/android-ndk-ceng-xiao-yan-qian-ming-yi" class="feature-image-wrapper bg-gray-100 rounded-lg flex-shrink-0 mr-8 w-full h-56 h-32 md:w-56 md:h-40">
-        <div class="post-feature-image lazy w-full h-56 h-32 md:w-56 md:h-40" data-bg="'https://mylifelog.github.io/post-images/android-ndk-ceng-xiao-yan-qian-ming-yi.jpeg'">
+    FILE *fp = fopen(&quot;/proc/self/maps&quot;, &quot;r&quot;);
+    if (NULL == fp) {
+        free(package);
+        return NULL;
+    }
+    const size_t BUFFER_SIZE = 256;
+    char buffer[BUFFER_SIZE] = &quot;&quot;;
+    char path[BUFFER_SIZE] = &quot;&quot;;
+
+    bool find = false;
+    while (fgets(buffer, BUFFER_SIZE, fp)) {
+        if (sscanf(buffer, &quot;%*llx-%*llx %*s %*s %*s %*s %s&quot;, path) == 1) {
+            if (strstr(path, package)) {
+                char *bname = basename(path);
+                NSV_LOGI(&quot;check basename[%s]&quot;, bname);
+                if (strcasecmp(getFilenameExt(bname), &quot;apk&quot;) == 0) {
+                    find = true;
+                    break;
+                }
+            }
+        }
+    }
+    fclose(fp);
+    free(package);
+    if (find) {
+        return strdup(path);
+    }
+    return NULL;
+}
+</code></pre>
+<p><strong>在Native层计算当前Apk文件的md5值关键代码：</strong></p>
+<pre><code class="language-cpp">void getFileMD5(const char* file_name, char* md5) {
+    unsigned char output[16];
+	FILE *f = fopen(file_name, &quot;rb&quot;);
+	if (f != NULL){
+		fseek(f, 0, SEEK_END);
+		int m_length = ftell(f);
+		if (m_length != -1) {
+			fseek(f, 0, SEEK_SET);
+        	unsigned char* m_content = (unsigned char *)malloc(sizeof(unsigned char) * m_length);
+        	if (fread(m_content, 1, m_length, f) == m_length) {
+        	    mbedtls_md5(m_content, (size_t)(sizeof(unsigned char) * m_length), output);
+                int i;
+                for (i = 0; i &lt; 16; i++) {
+                    sprintf(md5, &quot;%02X&quot;, output[i]);
+                    md5 += 2;
+                }
+                *md5 = '\0';
+        	}
+		}
+        fclose(f);
+	}
+}
+</code></pre>
+
         </div>
-      </a>
-    
-    <div class="content">
-      <a href="https://mylifelog.github.io/post/android-ndk-ceng-xiao-yan-qian-ming-yi">
-        <h2 class="post-title text-xl font-extrabold mt-5 md:mt-0">Android NDK层校验签名（一）</h2>
-      </a>
-      <div class="post-abstract text-gray-700 font-light my-4">
+
         
-      </div>
-      <div class="text-gray-400 text-sm font-light">2019-09-09 / 1 min read</div>
-    </div>
-  </section>
 
-  <section class="post-item md:flex pb-12 animated fadeIn" :style="{ 'animation-delay': `${3 * 0.2}s` }">
-    
-      <a href="https://mylifelog.github.io/post/li-hong-yi-lesslessji-qi-xue-xi-greatergreater-xue-xi-bi-ji-hw1" class="feature-image-wrapper bg-gray-100 rounded-lg flex-shrink-0 mr-8 w-full h-56 h-32 md:w-56 md:h-40">
-        <div class="post-feature-image lazy w-full h-56 h-32 md:w-56 md:h-40" data-bg="'https://pics-1252142997.cos.ap-chengdu.myqcloud.com/4VFG-hfefkqr0388400.jpg'">
-        </div>
-      </a>
-    
-    <div class="content">
-      <a href="https://mylifelog.github.io/post/li-hong-yi-lesslessji-qi-xue-xi-greatergreater-xue-xi-bi-ji-hw1">
-        <h2 class="post-title text-xl font-extrabold mt-5 md:mt-0">李宏毅《机器学习》学习笔记 HW1</h2>
-      </a>
-      <div class="post-abstract text-gray-700 font-light my-4">
-        <h2 id="1作业内容">1.作业内容：</h2>
-<p>本次作业使用豐原站的觀測記錄，分成 train set 跟 test set，train set 是豐原站每個月的前20天所有資料，test set則是從豐原站剩下的資料中取樣出來。</p>
 
-      </div>
-      <div class="text-gray-400 text-sm font-light">2019-08-14 / 11 min read</div>
-    </div>
-  </section>
+        <div class="flex justify-between py-8">
+          
 
-  <section class="post-item md:flex pb-12 animated fadeIn" :style="{ 'animation-delay': `${4 * 0.2}s` }">
-    
-      <a href="https://mylifelog.github.io/post/hello-gridea" class="feature-image-wrapper bg-gray-100 rounded-lg flex-shrink-0 mr-8 w-full h-56 h-32 md:w-56 md:h-40">
-        <div class="post-feature-image lazy w-full h-56 h-32 md:w-56 md:h-40" data-bg="'https://mylifelog.github.io/post-images/hello-gridea.png'">
-        </div>
-      </a>
-    
-    <div class="content">
-      <a href="https://mylifelog.github.io/post/hello-gridea">
-        <h2 class="post-title text-xl font-extrabold mt-5 md:mt-0">Hello Gridea</h2>
-      </a>
-      <div class="post-abstract text-gray-700 font-light my-4">
-        <p>👏  欢迎使用 <strong>Gridea</strong> ！<br>
-✍️  <strong>Gridea</strong> 一个静态博客写作客户端。你可以用它来记录你的生活、心情、知识、笔记、创意... ...</p>
-
-      </div>
-      <div class="text-gray-400 text-sm font-light">2018-12-12 / 1 min read</div>
-    </div>
-  </section>
-
-        <div class="read-more">
+          
+            <div class="next-post">
+              <a href="https://mylifelog.github.io/post/android-ndk-ceng-xiao-yan-qian-ming-er">
+                <h3 class="post-title">
+                   Android NDK层校验签名（二）
+                  <i class="remixicon-arrow-right-line"></i>
+                </h3>
+              </a>
+            </div>
           
         </div>
-        <div class="index-page">
-          <div class="pagination-container animated fadeIn">
-  
-  
-</div>
 
-        </div>
+        
+          
+
+          
+            <link rel="stylesheet" href="https://unpkg.com/disqusjs@1.1/dist/disqusjs.css">
+<script src="https://unpkg.com/disqusjs@1.1/dist/disqus.js"></script>
+
+<div id="disqus_thread"></div>
+
+<script>
+
+var options = {
+  shortname: 'mylifelog-1',
+  apikey: 'IrIfRhSHo9xFZYSdihL549i1IOrJ9mN2VUhMpPpp2ExKlwvFl2lqmOXd6xuot6TU',
+}
+if ('https://blog.discussss.workers.dev/api/') {
+  options.api = 'https://blog.discussss.workers.dev/api/'
+}
+var dsqjs = new DisqusJS(options)
+
+</script>
+
+          
+        
+
       </div>
     </div>
 
