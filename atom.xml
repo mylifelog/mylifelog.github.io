@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://mylifelog.github.io</id>
     <title>静水流深</title>
-    <updated>2019-11-06T07:01:01.316Z</updated>
+    <updated>2019-11-06T08:10:51.506Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://mylifelog.github.io"/>
     <link rel="self" href="https://mylifelog.github.io/atom.xml"/>
@@ -10,6 +10,199 @@
     <logo>https://mylifelog.github.io/images/avatar.png</logo>
     <icon>https://mylifelog.github.io/favicon.ico</icon>
     <rights>All rights reserved 2019, 静水流深</rights>
+    <entry>
+        <title type="html"><![CDATA[李宏毅《机器学习》学习笔记 HW2（二）]]></title>
+        <id>https://mylifelog.github.io/post/li-hong-yi-lesslessji-qi-xue-xi-greatergreater-xue-xi-bi-ji-hw2er</id>
+        <link href="https://mylifelog.github.io/post/li-hong-yi-lesslessji-qi-xue-xi-greatergreater-xue-xi-bi-ji-hw2er">
+        </link>
+        <updated>2019-11-06T07:59:59.000Z</updated>
+        <summary type="html"><![CDATA[<h2 id="1作业内容">1.作业内容：</h2>
+<p>任务：二分类问题，判断一个人年薪是否超过50k<br>
+数据集：ADULT<br>
+由Barry Becker从1994年人口普查数据库中提取，按照((AGE&gt;16) &amp;&amp; (AGI&gt;100) &amp;&amp; (AFNLWGT&gt;1) &amp;&amp; (HRSWK&gt;0))条件过滤后，保持数据的干净。</p>
+]]></summary>
+        <content type="html"><![CDATA[<h2 id="1作业内容">1.作业内容：</h2>
+<p>任务：二分类问题，判断一个人年薪是否超过50k<br>
+数据集：ADULT<br>
+由Barry Becker从1994年人口普查数据库中提取，按照((AGE&gt;16) &amp;&amp; (AGI&gt;100) &amp;&amp; (AFNLWGT&gt;1) &amp;&amp; (HRSWK&gt;0))条件过滤后，保持数据的干净。</p>
+<!-- more -->
+<p>对于国籍、最高学历等非数字内容，助教已经提前做好了One-Hot编码：<br>
+数据集： https://www.kaggle.com/c/ml2019spring-hw2/data</p>
+<h2 id="2思路分析">2.思路分析：</h2>
+<p>二分类问题，可以采用概率模型或者逻辑回归模型进行求解。<br>
+本文主要讲使用逻辑回归模型求解的过程。</p>
+<h2 id="3原理">3.原理：</h2>
+<p>由上一篇最后的推导得出：<br>
+<img src="https://mylifelog.github.io/post-images/1573027245214.PNG" alt=""><br>
+可见，概率模型可以由sigma函数包裹的线性函数来表示：<br>
+<img src="https://mylifelog.github.io/post-images/1573027382557.png" alt=""><br>
+将函数集可视化：<br>
+<img src="https://mylifelog.github.io/post-images/1573027421494.png" alt=""><br>
+这种函数集的分类问题叫做 Logistic Regression（逻辑回归）</p>
+<h2 id="4求解过程">4.求解过程：</h2>
+<pre><code class="language-Python"># -*- coding: UTF-8 -*-
+import numpy as np
+
+# Load the dataset
+train_x = np.loadtxt('../data/hw2/X_train', dtype='float', delimiter=',', skiprows=1)
+train_y = np.loadtxt('../data/hw2/Y_train', dtype='float', delimiter=',', skiprows=1)
+test_x = np.loadtxt('../data/hw2/X_test', dtype='float', delimiter=',', skiprows=1)
+
+# 初始化参数矩阵
+theta = np.ones(train_x.shape[1] + 1)
+iteration = 100000
+batch_num = 1600
+
+#学习速率相关
+lr = 0.01
+use_adagrad = 1
+lr_adagrad = 15
+
+#一共32561行数据，预留561行作为test
+test_size = 561+3200
+
+# 定义sigmoid函数
+# z: 输入的数组
+# 输出每个元素的sigmoid求值结果
+def sigmoid(z):
+    e_tmp = np.zeros(len(z))
+    e_tmp += np.e
+    denomitor = 1 + np.power(e_tmp, np.asarray(z) * (-1))
+    return 1 / denomitor
+
+# 定义函数集
+def F(theta, X_b):
+    try:
+        z = X_b.dot(theta.T)
+        f_out = sigmoid(z)
+        return f_out
+    except:
+        return float('inf')
+
+
+# 定义一个通用的01分布 cross entropy函数
+# 输入： 两个维度相同的一维数组
+# 输出： 每一个对应位置求01分布的cross_entropy,返回相同size的数组
+def cross_entropy(h, q):
+    h = np.asarray(h)
+    q = np.asarray(q)
+
+    h_one = h + 1e-10
+    h_zero = 1 - h + 1e-10
+
+    return (q * (np.log(h_one)) + (1-q) * (np.log(h_zero))) * -1
+
+
+
+# 定义损失函数CrossEntropy： 使用CrossEntropy计算一个batch数据的Loss
+def Loss(f, y):
+    try:
+        f = np.asarray(f)
+        y = np.asarray(y)
+        cr = cross_entropy(f, y)
+        return np.sum(cr) / len(y)
+    except:
+        return float('inf')
+
+# 计算梯度矩阵: 1个batch的计算结果
+def gradLoss(X_b, f, y):
+    return X_b.T.dot(f - y) / len(y)
+    # return X_b.T.dot(X_b.dot(theta) - y) * 2. / len(y)
+
+# 计算训练数据的准确率
+def calcTrainAcc():
+    batch_num = len(train_x) - test_size
+    n = 0
+    X_b_test = np.hstack([train_x[n:n+batch_num], np.ones((len(train_x[n:n+batch_num]), 1))])
+    #对X按列进行归一化
+    #X_b_test = X_b_test / (X_b_test.max(axis=0) + 1e-10)
+    y_test = train_y[n:n+batch_num]
+    f_test = F(theta, X_b_test)
+    f_test = np.around(f_test).astype('int32')
+    r_test = np.abs(y_test - f_test)
+    correct = 0
+    for r in r_test:
+        if r &lt; 0.5:
+            correct += 1
+    return 100 * correct / batch_num
+# 使用预留的test数据计算准确率
+def calcTestAcc():
+    batch_num = test_size
+    n = len(train_x) - batch_num
+    X_b_test = np.hstack([train_x[n:n+batch_num], np.ones((len(train_x[n:n+batch_num]), 1))])
+    #对X按列进行归一化
+    #X_b_test = X_b_test / (X_b_test.max(axis=0) + 1e-10)
+    y_test = train_y[n:n+batch_num]
+    f_test = F(theta, X_b_test)
+    f_test = np.around(f_test).astype('int32')
+    r_test = np.abs(y_test - f_test)
+    correct = 0
+    for r in r_test:
+        if r &lt; 0.5:
+            correct += 1
+    return 100 * correct / test_size
+
+# 使用预留的test数据计算准确率
+def calcTestResult():
+    batch_num = len(test_x)
+    n = 0
+    X_b_test = np.hstack([test_x[n:n+batch_num], np.ones((len(test_x[n:n+batch_num]), 1))])
+    #对X按列进行归一化
+    X_b_test = X_b_test / (X_b_test.max(axis=0) + 1e-10)
+
+    f_test = F(theta, X_b_test)
+    #r_test = np.abs(y_test - f_test)
+    f_test = np.around(f_test).astype('int32')
+    f_index = np.zeros(f_test.shape[0])
+    for i in range (len(f_index)):
+        f_index[i] = i+1
+    r_test = np.vstack([f_index.T,f_test.T]).astype('int32')
+    np.savetxt(&quot;hw2_test_result.csv&quot;, r_test.T, fmt='%d', delimiter=',', header=&quot;id,label&quot;, comments=&quot;&quot;)
+
+    #print(r_test)
+
+#统一对数据做归一化
+train_x = train_x / (train_x.max(axis=0) + 1e-10)
+
+#adagrad临时变量
+sum_g_sq = np.zeros(theta.shape[0])
+for i in range(iteration):
+    for n in range(0, len(train_x) - test_size, batch_num):
+        #取一个batch的数据，并对数据集添加Bias
+        X_b_bat = np.hstack([train_x[n:n+batch_num], np.ones((len(train_x[n:n+batch_num]), 1))])
+        y_bat = train_y[n:n+batch_num]
+
+        #对X按列进行归一化
+        #X_b_bat = X_b_bat / (X_b_bat.max(axis=0) + 1e-10)
+
+        #print(X_b_bat)
+
+        #计算当前function结果
+        f_bat = F(theta, X_b_bat)
+        #使用function结果和y数据计算loss
+        L = Loss(f_bat, y_bat)
+        #计算梯度矩阵
+        grad = gradLoss(X_b_bat, f_bat, y_bat)
+        #更新参数矩阵
+        if use_adagrad:
+            #使用AdaGrad计算lengingRate: ln除以历史梯度平方和开根号
+            sum_g_sq += grad**2 + 1e-10
+            ada_lr = lr_adagrad * 1./np.sqrt(sum_g_sq)
+            theta = theta - ada_lr*grad
+        else:
+            theta = theta - lr*grad
+    if i % 10 == 0:
+        print(&quot;T=&quot;,i)
+        #calcTestResult()
+        #print(&quot;Loss:&quot;, L)
+        print(&quot;TrainAcc:&quot;, calcTrainAcc())
+        print(&quot;TestAcc:&quot;, calcTestAcc())
+        if (i == 7700):
+            print(&quot;result saved!&quot;)
+            calcTestResult()
+</code></pre>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[李宏毅《机器学习》学习笔记 HW2（一）]]></title>
         <id>https://mylifelog.github.io/post/li-hong-yi-lesslessji-qi-xue-xi-greatergreater-xue-xi-bi-ji-hw2</id>
