@@ -2,14 +2,330 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://mylifelog.github.io</id>
     <title>静水流深</title>
-    <updated>2019-11-06T08:11:37.143Z</updated>
+    <updated>2020-05-22T12:28:50.462Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://mylifelog.github.io"/>
     <link rel="self" href="https://mylifelog.github.io/atom.xml"/>
     <subtitle>闷声学大习！</subtitle>
     <logo>https://mylifelog.github.io/images/avatar.png</logo>
     <icon>https://mylifelog.github.io/favicon.ico</icon>
-    <rights>All rights reserved 2019, 静水流深</rights>
+    <rights>All rights reserved 2020, 静水流深</rights>
+    <entry>
+        <title type="html"><![CDATA[windows x64平台qt集成gRPC记录]]></title>
+        <id>https://mylifelog.github.io/post/windows-x64-ping-tai-qt-ji-cheng-grpc-ji-lu</id>
+        <link href="https://mylifelog.github.io/post/windows-x64-ping-tai-qt-ji-cheng-grpc-ji-lu">
+        </link>
+        <updated>2020-05-22T11:40:55.000Z</updated>
+        <summary type="html"><![CDATA[<p>公司的一个项目，为了实现Windows平台跨语言跨进程通信，在初步研究了gRPC、Thrift框架后，因为gRPC采用proto buffers作为通信协议（开源真香），以及Thrift的C++依赖boost过于复杂的原因，决定使用gRPC. 在几经折腾之后，终于成功（2020.5.22）.期间也被很多坑爹教程坑过，现将过程分享如下:</p>
+]]></summary>
+        <content type="html"><![CDATA[<p>公司的一个项目，为了实现Windows平台跨语言跨进程通信，在初步研究了gRPC、Thrift框架后，因为gRPC采用proto buffers作为通信协议（开源真香），以及Thrift的C++依赖boost过于复杂的原因，决定使用gRPC. 在几经折腾之后，终于成功（2020.5.22）.期间也被很多坑爹教程坑过，现将过程分享如下:</p>
+<!-- more -->
+<h1 id="目标将grpc-1281版本库集成到qt项目中成功编译并通信">目标：将gRPC 1.28.1版本库集成到qt项目中，成功编译并通信。</h1>
+<h2 id="1基本需求">1.基本需求：</h2>
+<p>安装VS2017 Community版(不要与VS2015混装，否则gRPC库添加到qt编译报错)<br>
+安装QT 5.9.9版, 编译环境选MSVC-2017-x64<br>
+github clone vcpkg 编译生成vcpkg.exe</p>
+<h2 id="2下载编译grpc">2.下载编译gRPC：</h2>
+<p>cd到vcpkg目录，在终端执行 vcpkg install grpc:x64-windows (注意不要grpc:x64-windows-static，否则集成后qt会提示runtimelibrary不匹配)<br>
+下载编译的过程很漫长，想要加速下载，可以在终端设置代理,以V2RayN为例，设置:</p>
+<pre><code class="language-bash">set http_proxy=http://x.x.x.x:1081 
+set https_proxy=http://x.x.x.x:1081 
+</code></pre>
+<p>下载好之后会将grpc相关保存到vcpkg的\installed\x64-windows目录如图：</p>
+<p>其中，include文件夹是需要qt项目引入的所有头文件，lib文件夹是需要引入的静态文件，tools下面的protobuf和grpc是生成的exe文件，主要用途是将.proto转为某种语言的代码。将这两个文件的exe放到一起，方便使用。</p>
+<h2 id="3编译proto文件">3.编译proto文件：</h2>
+<p>将第2步的exe放到一起后，新建cpp,csharp,python文件夹。新建bat文件，添加如下内容：</p>
+<pre><code class="language-bash">
+</code></pre>
+<p>将.proto文件拷至该文件夹，执行bat文件可在对应子文件夹生成对应的代码。将生成的cpp代码和实例项目的client或者server的代码修改后拷贝到qt项目中。</p>
+<h2 id="4复制文件到qt项目">4.复制文件到QT项目：</h2>
+<p>将第1步得到的include文件夹拷贝到qt项目文件夹<br>
+在qt文件夹下面新建staticlib文件夹，内部再建release，debug两个文件夹。<br>
+将第1步得到的 vcpkg\installed\x64-windows\lib\ 内所有文件拷贝到release文件夹<br>
+将第1步得到的 vcpkg\installed\x64-windows\debug\lib 内所有文件拷贝到debug文件夹</p>
+<h2 id="5编辑qt内的pro文件">5.编辑qt内的pro文件：</h2>
+<p>主要是include grpc的头文件，引入lib库，增加一些编译选项</p>
+<p>5.1 引入依赖头文件：</p>
+<pre><code>INCLUDEPATH += $$PWD/include
+DEPENDPATH += $$PWD/include
+INCLUDEPATH += $$PWD/staticlib/debug
+INCLUDEPATH += $$PWD/staticlib/release
+DEPENDPATH += $$PWD/staticlib/debug
+DEPENDPATH += $$PWD/staticlib/release
+</code></pre>
+<p>5.2 引入lib库(除了grpc还需要引入C:\Program Files (x86)\Windows Kits\10\Lib\10.0.17763.0\um\x64下面的WS2_32.lib和AdvAPI32.Lib)</p>
+<pre><code class="language-cpp">win32:CONFIG(release, debug|release) {
+   //release库
+    PRE_TARGETDEPS += $$PWD/staticlib/release/cares.lib
+    LIBS += -L$$PWD/staticlib/release/ -lgpr
+    PRE_TARGETDEPS += $$PWD/staticlib/release/gpr.lib
+    LIBS += -L$$PWD/staticlib/release/ -lgrpc
+    PRE_TARGETDEPS += $$PWD/staticlib/release/grpc.lib
+    LIBS += -L$$PWD/staticlib/release/ -lgrpc_cronet
+    ...
+    //后面还有很多，省略了，注意新版grpc依赖absl库，所以非常多的lib你都要添加进来
+}
+else:win32:CONFIG(debug, debug|release) {
+   //debug库 同release 只是路径为debug下
+}
+</code></pre>
+<p>5.3 添加编译选项：<br>
+DEFINES += _WIN32_WINNT=0x600</p>
+<p>5.4 执行qmake后即可编译运行</p>
+<h2 id="6修改后的完整pro文件如下">6.修改后的完整pro文件如下：</h2>
+<pre><code class="language-cpp">QT -= gui
+
+CONFIG += c++11 console
+CONFIG -= app_bundle
+
+# The following define makes your compiler emit warnings if you use
+# any Qt feature that has been marked deprecated (the exact warnings
+# depend on your compiler). Please consult the documentation of the
+# deprecated API in order to know how to port your code away from it.
+DEFINES += QT_DEPRECATED_WARNINGS
+
+# You can also make your code fail to compile if it uses deprecated APIs.
+# In order to do so, uncomment the following line.
+# You can also select to disable deprecated APIs only up to a certain version of Qt.
+#DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
+
+SOURCES += \
+        helloworld.grpc.pb.cc \
+        helloworld.pb.cc \
+        main.cpp
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+
+
+INCLUDEPATH += $$PWD/include
+DEPENDPATH += $$PWD/include
+INCLUDEPATH += $$PWD/staticlib/debug
+INCLUDEPATH += $$PWD/staticlib/release
+DEPENDPATH += $$PWD/staticlib/debug
+DEPENDPATH += $$PWD/staticlib/release
+
+
+win32:CONFIG(release, debug|release) {
+    LIBS += -L$$PWD/staticlib/release/ -labsl_bad_any_cast_impl
+    PRE_TARGETDEPS += $$PWD/staticlib/release/absl_bad_any_cast_impl.lib
+    LIBS += -L$$PWD/staticlib/release/ -labsl_bad_optional_access
+    PRE_TARGETDEPS += $$PWD/staticlib/release/absl_bad_optional_access.lib
+    LIBS += -L$$PWD/staticlib/release/ -labsl_bad_variant_access
+    PRE_TARGETDEPS += $$PWD/staticlib/release/absl_bad_variant_access.lib
+    LIBS += -L$$PWD/staticlib/release/ -labsl_base
+    PRE_TARGETDEPS += $$PWD/staticlib/release/absl_base.lib
+    LIBS += -L$$PWD/staticlib/release/ -labsl_city
+    PRE_TARGETDEPS += $$PWD/staticlib/release/absl_city.lib
+    LIBS += -L$$PWD/staticlib/release/ -labsl_civil_time
+    PRE_TARGETDEPS += $$PWD/staticlib/release/absl_civil_time.lib
+    LIBS += -L$$PWD/staticlib/release/ -labsl_cord
+    PRE_TARGETDEPS += $$PWD/staticlib/release/absl_cord.lib
+    LIBS += -L$$PWD/staticlib/release/ -labsl_debugging_internal
+    PRE_TARGETDEPS += $$PWD/staticlib/release/absl_debugging_internal.lib
+    LIBS += -L$$PWD/staticlib/release/ -labsl_demangle_internal
+    PRE_TARGETDEPS += $$PWD/staticlib/release/absl_demangle_internal.lib
+    LIBS += -L$$PWD/staticlib/release/ -labsl_dynamic_annotations
+    PRE_TARGETDEPS += $$PWD/staticlib/release/absl_dynamic_annotations.lib
+    LIBS += -L$$PWD/staticlib/release/ -labsl_examine_stack
+    PRE_TARGETDEPS += $$PWD/staticlib/release/absl_examine_stack.lib
+    LIBS += -L$$PWD/staticlib/release/ -labsl_exponential_biased
+    PRE_TARGETDEPS += $$PWD/staticlib/release/absl_exponential_biased.lib
+    LIBS += -L$$PWD/staticlib/release/ -labsl_failure_signal_handler
+    PRE_TARGETDEPS += $$PWD/staticlib/release/absl_failure_signal_handler.lib
+    LIBS += -L$$PWD/staticlib/release/ -labsl_flags
+    PRE_TARGETDEPS += $$PWD/staticlib/release/absl_flags.lib
+    LIBS += -L$$PWD/staticlib/release/ -labsl_flags_config
+    PRE_TARGETDEPS += $$PWD/staticlib/release/absl_flags_config.lib
+    LIBS += -L$$PWD/staticlib/release/ -labsl_flags_internal
+    PRE_TARGETDEPS += $$PWD/staticlib/release/absl_flags_internal.lib
+    LIBS += -L$$PWD/staticlib/release/ -labsl_flags_marshalling
+    PRE_TARGETDEPS += $$PWD/staticlib/release/absl_flags_marshalling.lib
+    LIBS += -L$$PWD/staticlib/release/ -labsl_flags_parse
+    PRE_TARGETDEPS += $$PWD/staticlib/release/absl_flags_parse.lib
+    LIBS += -L$$PWD/staticlib/release/ -labsl_flags_program_name
+    PRE_TARGETDEPS += $$PWD/staticlib/release/absl_flags_program_name.lib
+    LIBS += -L$$PWD/staticlib/release/ -labsl_flags_registry
+    PRE_TARGETDEPS += $$PWD/staticlib/release/absl_flags_registry.lib
+    LIBS += -L$$PWD/staticlib/release/ -labsl_flags_usage
+    PRE_TARGETDEPS += $$PWD/staticlib/release/absl_flags_usage.lib
+    LIBS += -L$$PWD/staticlib/release/ -labsl_flags_usage_internal
+    PRE_TARGETDEPS += $$PWD/staticlib/release/absl_flags_usage_internal.lib
+    LIBS += -L$$PWD/staticlib/release/ -labsl_graphcycles_internal
+    PRE_TARGETDEPS += $$PWD/staticlib/release/absl_graphcycles_internal.lib
+    LIBS += -L$$PWD/staticlib/release/ -labsl_hash
+    PRE_TARGETDEPS += $$PWD/staticlib/release/absl_hash.lib
+    LIBS += -L$$PWD/staticlib/release/ -labsl_hashtablez_sampler
+    PRE_TARGETDEPS += $$PWD/staticlib/release/absl_hashtablez_sampler.lib
+    LIBS += -L$$PWD/staticlib/release/ -labsl_int128
+    PRE_TARGETDEPS += $$PWD/staticlib/release/absl_int128.lib
+    LIBS += -L$$PWD/staticlib/release/ -labsl_leak_check
+    PRE_TARGETDEPS += $$PWD/staticlib/release/absl_leak_check.lib
+    LIBS += -L$$PWD/staticlib/release/ -labsl_leak_check_disable
+    PRE_TARGETDEPS += $$PWD/staticlib/release/absl_leak_check_disable.lib
+    LIBS += -L$$PWD/staticlib/release/ -labsl_log_severity
+    PRE_TARGETDEPS += $$PWD/staticlib/release/absl_log_severity.lib
+    LIBS += -L$$PWD/staticlib/release/ -labsl_malloc_internal
+    PRE_TARGETDEPS += $$PWD/staticlib/release/absl_malloc_internal.lib
+    LIBS += -L$$PWD/staticlib/release/ -labsl_periodic_sampler
+    PRE_TARGETDEPS += $$PWD/staticlib/release/absl_periodic_sampler.lib
+    LIBS += -L$$PWD/staticlib/release/ -labsl_random_distributions
+    PRE_TARGETDEPS += $$PWD/staticlib/release/absl_random_distributions.lib
+    LIBS += -L$$PWD/staticlib/release/ -labsl_random_internal_distribution_test_util
+    PRE_TARGETDEPS += $$PWD/staticlib/release/absl_random_internal_distribution_test_util.lib
+    LIBS += -L$$PWD/staticlib/release/ -labsl_random_internal_pool_urbg
+    PRE_TARGETDEPS += $$PWD/staticlib/release/absl_random_internal_pool_urbg.lib
+    LIBS += -L$$PWD/staticlib/release/ -labsl_random_internal_randen
+    PRE_TARGETDEPS += $$PWD/staticlib/release/absl_random_internal_randen.lib
+    LIBS += -L$$PWD/staticlib/release/ -labsl_random_internal_randen_hwaes
+    PRE_TARGETDEPS += $$PWD/staticlib/release/absl_random_internal_randen_hwaes.lib
+    LIBS += -L$$PWD/staticlib/release/ -labsl_random_internal_randen_hwaes_impl
+    PRE_TARGETDEPS += $$PWD/staticlib/release/absl_random_internal_randen_hwaes_impl.lib
+    LIBS += -L$$PWD/staticlib/release/ -labsl_random_internal_randen_slow
+    PRE_TARGETDEPS += $$PWD/staticlib/release/absl_random_internal_randen_slow.lib
+    LIBS += -L$$PWD/staticlib/release/ -labsl_random_internal_seed_material
+    PRE_TARGETDEPS += $$PWD/staticlib/release/absl_random_internal_seed_material.lib
+    LIBS += -L$$PWD/staticlib/release/ -labsl_random_seed_gen_exception
+    PRE_TARGETDEPS += $$PWD/staticlib/release/absl_random_seed_gen_exception.lib
+    LIBS += -L$$PWD/staticlib/release/ -labsl_random_seed_gen_exception
+    PRE_TARGETDEPS += $$PWD/staticlib/release/absl_random_seed_gen_exception.lib
+    LIBS += -L$$PWD/staticlib/release/ -labsl_random_seed_sequences
+    PRE_TARGETDEPS += $$PWD/staticlib/release/absl_random_seed_sequences.lib
+    LIBS += -L$$PWD/staticlib/release/ -labsl_raw_hash_set
+    PRE_TARGETDEPS += $$PWD/staticlib/release/absl_raw_hash_set.lib
+    LIBS += -L$$PWD/staticlib/release/ -labsl_raw_logging_internal
+    PRE_TARGETDEPS += $$PWD/staticlib/release/absl_raw_logging_internal.lib
+    LIBS += -L$$PWD/staticlib/release/ -labsl_scoped_set_env
+    PRE_TARGETDEPS += $$PWD/staticlib/release/absl_scoped_set_env.lib
+    LIBS += -L$$PWD/staticlib/release/ -labsl_spinlock_wait
+    PRE_TARGETDEPS += $$PWD/staticlib/release/absl_spinlock_wait.lib
+    LIBS += -L$$PWD/staticlib/release/ -labsl_stacktrace
+    PRE_TARGETDEPS += $$PWD/staticlib/release/absl_stacktrace.lib
+    LIBS += -L$$PWD/staticlib/release/ -labsl_status
+    PRE_TARGETDEPS += $$PWD/staticlib/release/absl_status.lib
+    LIBS += -L$$PWD/staticlib/release/ -labsl_str_format_internal
+    PRE_TARGETDEPS += $$PWD/staticlib/release/absl_str_format_internal.lib
+    LIBS += -L$$PWD/staticlib/release/ -labsl_strings
+    PRE_TARGETDEPS += $$PWD/staticlib/release/absl_strings.lib
+    LIBS += -L$$PWD/staticlib/release/ -labsl_strings_internal
+    PRE_TARGETDEPS += $$PWD/staticlib/release/absl_strings_internal.lib
+    LIBS += -L$$PWD/staticlib/release/ -labsl_symbolize
+    PRE_TARGETDEPS += $$PWD/staticlib/release/absl_symbolize.lib
+    LIBS += -L$$PWD/staticlib/release/ -labsl_synchronization
+    PRE_TARGETDEPS += $$PWD/staticlib/release/absl_synchronization.lib
+    LIBS += -L$$PWD/staticlib/release/ -labsl_throw_delegate
+    PRE_TARGETDEPS += $$PWD/staticlib/release/absl_throw_delegate.lib
+    LIBS += -L$$PWD/staticlib/release/ -labsl_time
+    PRE_TARGETDEPS += $$PWD/staticlib/release/absl_time.lib
+    LIBS += -L$$PWD/staticlib/release/ -labsl_time_zone
+    PRE_TARGETDEPS += $$PWD/staticlib/release/absl_time_zone.lib
+    LIBS += -L$$PWD/staticlib/release/ -lcares
+    PRE_TARGETDEPS += $$PWD/staticlib/release/cares.lib
+    LIBS += -L$$PWD/staticlib/release/ -lgpr
+    PRE_TARGETDEPS += $$PWD/staticlib/release/gpr.lib
+    LIBS += -L$$PWD/staticlib/release/ -lgrpc
+    PRE_TARGETDEPS += $$PWD/staticlib/release/grpc.lib
+    LIBS += -L$$PWD/staticlib/release/ -lgrpc_cronet
+    PRE_TARGETDEPS += $$PWD/staticlib/release/grpc_cronet.lib
+    LIBS += -L$$PWD/staticlib/release/ -lgrpc_plugin_support
+    PRE_TARGETDEPS += $$PWD/staticlib/release/grpc_plugin_support.lib
+    LIBS += -L$$PWD/staticlib/release/ -lgrpc_unsecure
+    PRE_TARGETDEPS += $$PWD/staticlib/release/grpc_unsecure.lib
+    LIBS += -L$$PWD/staticlib/release/ -lgrpc++
+    PRE_TARGETDEPS += $$PWD/staticlib/release/grpc++.lib
+    LIBS += -L$$PWD/staticlib/release/ -lgrpc++_alts
+    PRE_TARGETDEPS += $$PWD/staticlib/release/grpc++_alts.lib
+    LIBS += -L$$PWD/staticlib/release/ -lgrpc++_error_details
+    PRE_TARGETDEPS += $$PWD/staticlib/release/grpc++_error_details.lib
+    LIBS += -L$$PWD/staticlib/release/ -lgrpc++_reflection
+    PRE_TARGETDEPS += $$PWD/staticlib/release/grpc++_reflection.lib
+    LIBS += -L$$PWD/staticlib/release/ -lgrpc++_unsecure
+    PRE_TARGETDEPS += $$PWD/staticlib/release/grpc++_unsecure.lib
+    LIBS += -L$$PWD/staticlib/release/ -lgrpcpp_channelz
+    PRE_TARGETDEPS += $$PWD/staticlib/release/grpcpp_channelz.lib
+    LIBS += -L$$PWD/staticlib/release/ -lhandlers
+    PRE_TARGETDEPS += $$PWD/staticlib/release/handlers.lib
+    LIBS += -L$$PWD/staticlib/release/ -llegacy_msg_reflection
+    PRE_TARGETDEPS += $$PWD/staticlib/release/legacy_msg_reflection.lib
+    LIBS += -L$$PWD/staticlib/release/ -llibcrypto
+    PRE_TARGETDEPS += $$PWD/staticlib/release/libcrypto.lib
+    LIBS += -L$$PWD/staticlib/release/ -llibprotobuf
+    PRE_TARGETDEPS += $$PWD/staticlib/release/libprotobuf.lib
+    LIBS += -L$$PWD/staticlib/release/ -llibprotobuf-lite
+    PRE_TARGETDEPS += $$PWD/staticlib/release/libprotobuf-lite.lib
+    LIBS += -L$$PWD/staticlib/release/ -llibprotoc
+    PRE_TARGETDEPS += $$PWD/staticlib/release/libprotoc.lib
+    LIBS += -L$$PWD/staticlib/release/ -llibssl
+    PRE_TARGETDEPS += $$PWD/staticlib/release/libssl.lib
+    LIBS += -L$$PWD/staticlib/release/ -lreflection
+    PRE_TARGETDEPS += $$PWD/staticlib/release/reflection.lib
+    LIBS += -L$$PWD/staticlib/release/ -lupb
+    PRE_TARGETDEPS += $$PWD/staticlib/release/upb.lib
+    LIBS += -L$$PWD/staticlib/release/ -lupb_json
+    PRE_TARGETDEPS += $$PWD/staticlib/release/upb_json.lib
+    LIBS += -L$$PWD/staticlib/release/ -lupb_pb
+    PRE_TARGETDEPS += $$PWD/staticlib/release/upb_pb.lib
+    LIBS += -L$$PWD/staticlib/release/ -lzlib
+    PRE_TARGETDEPS += $$PWD/staticlib/release/zlib.lib
+    LIBS += -L$$PWD/staticlib/release/ -laddress_sorting
+    PRE_TARGETDEPS += $$PWD/staticlib/release/address_sorting.lib
+}
+else:win32:CONFIG(debug, debug|release){
+   LIBS += -L$$PWD/staticlib/debug/ -llibprotobufd
+   PRE_TARGETDEPS += $$PWD/staticlib/debug/libprotobufd.lib
+   LIBS += -L$$PWD/staticlib/debug/ -lgrpc++
+   PRE_TARGETDEPS += $$PWD/staticlib/debug/grpc.lib
+   LIBS += -L$$PWD/staticlib/debug/ -lgrpcpp_channelz
+   PRE_TARGETDEPS += $$PWD/staticlib/debug/grpcpp_channelz.lib
+
+    LIBS += -L$$PWD/staticlib/debug/ -lcares
+    PRE_TARGETDEPS += $$PWD/staticlib/debug/cares.lib
+    LIBS += -L$$PWD/staticlib/debug/ -laddress_sorting
+    PRE_TARGETDEPS += $$PWD/staticlib/debug/address_sorting.lib
+    LIBS += -L$$PWD/staticlib/debug/ -lgpr
+    PRE_TARGETDEPS += $$PWD/staticlib/debug/gpr.lib
+    LIBS += -L$$PWD/staticlib/debug/ -lgrpc
+    PRE_TARGETDEPS += $$PWD/staticlib/debug/grpc.lib
+    LIBS += -L$$PWD/staticlib/debug/ -lgrpc++
+    PRE_TARGETDEPS += $$PWD/staticlib/debug/grpc++.lib
+    LIBS += -L$$PWD/staticlib/debug/ -llibprotobufd
+    PRE_TARGETDEPS += $$PWD/staticlib/debug/libprotobufd.lib
+
+    LIBS += -L$$PWD/staticlib/debug/ -lssl
+    PRE_TARGETDEPS += $$PWD/staticlib/debug/ssl.lib
+    LIBS += -L$$PWD/staticlib/debug/ -lcrypto
+    PRE_TARGETDEPS += $$PWD/staticlib/debug/crypto.lib
+
+    LIBS += -L$$PWD/staticlib/debug/ -lzlibstaticd
+    PRE_TARGETDEPS += $$PWD/staticlib/debug/zlibstaticd.lib
+}
+DEFINES += _WIN32_WINNT=0x600
+
+win32: LIBS += -L'C:/Program Files (x86)/Windows Kits/10/Lib/10.0.17763.0/um/x64/' -lWS2_32
+
+INCLUDEPATH += 'C:/Program Files (x86)/Windows Kits/10/Lib/10.0.17763.0/um/x64'
+DEPENDPATH += 'C:/Program Files (x86)/Windows Kits/10/Lib/10.0.17763.0/um/x64'
+
+win32:!win32-g++: PRE_TARGETDEPS += 'C:/Program Files (x86)/Windows Kits/10/Lib/10.0.17763.0/um/x64/WS2_32.lib'
+else:win32-g++: PRE_TARGETDEPS += 'C:/Program Files (x86)/Windows Kits/10/Lib/10.0.17763.0/um/x64/libWS2_32.a'
+
+
+win32: LIBS += -L'C:/Program Files (x86)/Windows Kits/10/Lib/10.0.17763.0/um/x64/' -lAdvAPI32
+
+INCLUDEPATH += 'C:/Program Files (x86)/Windows Kits/10/Lib/10.0.17763.0/um/x64'
+DEPENDPATH += 'C:/Program Files (x86)/Windows Kits/10/Lib/10.0.17763.0/um/x64'
+
+win32:!win32-g++: PRE_TARGETDEPS += 'C:/Program Files (x86)/Windows Kits/10/Lib/10.0.17763.0/um/x64/AdvAPI32.lib'
+else:win32-g++: PRE_TARGETDEPS += 'C:/Program Files (x86)/Windows Kits/10/Lib/10.0.17763.0/um/x64/libAdvAPI32.a'
+
+HEADERS += \
+    helloworld.grpc.pb.h \
+    helloworld.pb.h
+</code></pre>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[李宏毅《机器学习》学习笔记 HW2（二）]]></title>
         <id>https://mylifelog.github.io/post/li-hong-yi-lesslessji-qi-xue-xi-greatergreater-xue-xi-bi-ji-hw2er</id>
