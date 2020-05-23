@@ -4,7 +4,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>静水流深</title>
 <meta name="description" content="闷声学大习！" />
-<link rel="shortcut icon" href="https://mylifelog.github.io/favicon.ico?v=1590196302472">
+<link rel="shortcut icon" href="https://mylifelog.github.io/favicon.ico?v=1590196528055">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
 <link href="https://cdn.remixicon.com/releases/v1.3.1/remixicon.css" rel="stylesheet">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
@@ -29,7 +29,7 @@
       <div class="flex lg:block p-4 lg:px-0 items-center fixed lg:static lg:block top-0 right-0 left-0 bg-white z-50">
         <i class="remixicon-menu-2-line lg:mt-4 text-2xl cursor-pointer animated fadeIn" onclick="openMenu()"></i>
         <a href="https://mylifelog.github.io">
-          <img class="animated fadeInLeft avatar rounded-lg mx-4 lg:mt-32 lg:mx-0 mt-0 lg:w-24 lg:h-24 w-12 w-12" src="https://mylifelog.github.io/images/avatar.png?v=1590196302472" alt="">
+          <img class="animated fadeInLeft avatar rounded-lg mx-4 lg:mt-32 lg:mx-0 mt-0 lg:w-24 lg:h-24 w-12 w-12" src="https://mylifelog.github.io/images/avatar.png?v=1590196528055" alt="">
         </a>
         <h1 class="animated fadeInLeft lg:text-4xl font-extrabold lg:mt-8 mt-0 text-xl" style="animation-delay: 0.2s">静水流深</h1>
       </div>
@@ -118,7 +118,7 @@ github clone vcpkg 编译生成vcpkg.exe</p>
 set https_proxy=http://x.x.x.x:1081 
 </code></pre>
 <p>下载好之后会将grpc相关保存到vcpkg的\installed\x64-windows目录如图：<br>
-<img src="https://mylifelog.github.io/post-images/1590150890015.PNG" alt=""></p>
+<img src="https://mylifelog.github.io/post-images/1590150890015.PNG" alt="" loading="lazy"></p>
 <p>其中，include文件夹是需要qt项目引入的所有头文件，lib文件夹是需要引入的静态文件，tools下面的protobuf和grpc是生成的exe文件，主要用途是将.proto转为某种语言的代码。将这两个文件的exe放到一起，方便使用。</p>
 <h2 id="3编译proto文件生成cppcsharppython三种为例">3.编译proto文件(生成cpp,csharp,python三种为例)：</h2>
 <p>将第2步的exe放到一起后，新建cpp,csharp,python文件夹。新建bat文件，添加如下内容：</p>
@@ -130,7 +130,7 @@ protoc -I ./ --grpc_out=./python --plugin=protoc-gen-grpc=./grpc_python_plugin.e
 protoc -I ./ --python_out=./python ./*.proto
 </code></pre>
 <p>将.proto文件拷至该文件夹，执行bat文件可在对应子文件夹生成对应的代码。<br>
-<img src="https://mylifelog.github.io/post-images/1590150782709.PNG" alt=""></p>
+<img src="https://mylifelog.github.io/post-images/1590150782709.PNG" alt="" loading="lazy"></p>
 <p>将生成的cpp代码h代码和实例项目的client或者server的代码修改后拷贝到qt项目中。</p>
 <h2 id="4复制文件到qt项目">4.复制文件到QT项目：</h2>
 <p>将第1步得到的include文件夹拷贝到qt项目文件夹<br>
@@ -566,6 +566,14 @@ else:win32-g++: PRE_TARGETDEPS += 'C:/Program Files (x86)/Windows Kits/10/Lib/10
         </div>
 
         
+          <a class="animated fadeInUp p-2 items-center text-sm text-gray-700 border hover:bg-gray-300 leading-none rounded-full flex lg:inline-flex m-4 " href="https://mylifelog.github.io/tag/uksBiR-AK/">
+            <span class="flex-auto">qt</span>
+          </a>
+        
+          <a class="animated fadeInUp p-2 items-center text-sm text-gray-700 border hover:bg-gray-300 leading-none rounded-full flex lg:inline-flex m-4 " href="https://mylifelog.github.io/tag/OlEvZpu9fy/">
+            <span class="flex-auto">qrpc</span>
+          </a>
+        
 
 
         <div class="flex justify-between py-8">
@@ -573,7 +581,7 @@ else:win32-g++: PRE_TARGETDEPS += 'C:/Program Files (x86)/Windows Kits/10/Lib/10
 
           
             <div class="next-post">
-              <a href="https://mylifelog.github.io/post/li-hong-yi-lesslessji-qi-xue-xi-greatergreater-xue-xi-bi-ji-hw2er">
+              <a href="https://mylifelog.github.io/post/li-hong-yi-lesslessji-qi-xue-xi-greatergreater-xue-xi-bi-ji-hw2er/">
                 <h3 class="post-title">
                   李宏毅《机器学习》学习笔记 HW2（二）
                   <i class="remixicon-arrow-right-line"></i>

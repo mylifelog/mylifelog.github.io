@@ -36,17 +36,30 @@
       
         <div class="animated fadeInLeft" style="animation-delay: 0.4s">
           <p class="my-4 text-gray-600 font-light hidden lg:block">
-            文章目录
+            闷声学大习！
           </p>
-          <div class="toc-container hidden lg:block">
-            <ul class="markdownIt-TOC">
-<li>
-<ul>
-<li><a href="#%E7%89%B9%E6%80%A7">特性👇</a></li>
-</ul>
-</li>
-</ul>
-
+          <div class="animated fadeInLeft social-container hidden lg:block" style="animation-delay: 0.6s">
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
           </div>
         </div>
       
@@ -90,85 +103,34 @@
 </div>
 <div class="mask" onclick="closeMenu()">
 </div>
-      <div class="content-wrapper py-32 lg:p-8 lg:w-3/4 post-detail animated fadeIn">
-        <h1 class="text-3xl font-bold lg:mt-16">Hello Gridea</h1>
-        <div class="text-sm text-gray-700 lg:my-8">
-          2018-12-12 / 2 min read
+      <div class="content-wrapper py-32 lg:p-8 lg:w-3/4">
+        <h2 class="text-lg text-gray-700 mb-8">
+          <i class="remixicon-bookmark-line"></i> qt
+        </h2>
+        
+  <section class="post-item md:flex pb-12 animated fadeIn" :style="{ 'animation-delay': `${0 * 0.2}s` }">
+    
+      <a href="https://mylifelog.github.io/post/windows-x64-ping-tai-qt-ji-cheng-grpc-ji-lu/" class="feature-image-wrapper bg-gray-100 rounded-lg flex-shrink-0 mr-8 w-full h-56 h-32 md:w-56 md:h-40">
+        <div class="post-feature-image lazy w-full h-56 h-32 md:w-56 md:h-40" data-bg="'https://mylifelog.github.io/post-images/windows-x64-ping-tai-qt-ji-cheng-grpc-ji-lu.png'">
         </div>
-        
-          <img class="post-feature-image rounded-lg mx-auto my-4" src="https://mylifelog.github.io/post-images/hello-gridea.png" alt="">
-        
-        <div class="post-content yue">
-          <p>👏  欢迎使用 <strong>Gridea</strong> ！<br>
-✍️  <strong>Gridea</strong> 一个静态博客写作客户端。你可以用它来记录你的生活、心情、知识、笔记、创意... ...</p>
-<!-- more -->
-<p><a href="https://github.com/getgridea/gridea">Github</a><br>
-<a href="http://hvenotes.fehey.com/">Gridea 主页</a><br>
-<a href="http://fehey.com/">示例网站</a></p>
-<h2 id="特性">特性👇</h2>
-<p>📝  你可以使用最酷的 <strong>Markdown</strong> 语法，进行快速创作</p>
-<p>🌉  你可以给文章配上精美的封面图和在文章任意位置插入图片</p>
-<p>🏷️  你可以对文章进行标签分组</p>
-<p>📋  你可以自定义菜单，甚至可以创建外部链接菜单</p>
-<p>💻  你可以在 <strong>𝖶𝗂𝗇𝖽𝗈𝗐𝗌</strong> 或 <strong>𝖬𝖺𝖼𝖮𝖲</strong> 设备上使用此客户端</p>
-<p>🌎  你可以使用 <strong>𝖦𝗂𝗍𝗁𝗎𝖻 𝖯𝖺𝗀𝖾𝗌</strong> 或 <strong>Coding Pages</strong> 向世界展示，未来将支持更多平台</p>
-<p>💬  你可以进行简单的配置，接入 <a href="https://github.com/gitalk/gitalk">Gitalk</a> 或 <a href="https://github.com/SukkaW/DisqusJS">DisqusJS</a> 评论系统</p>
-<p>🇬🇧  你可以使用<strong>中文简体</strong>或<strong>英语</strong></p>
-<p>🌁  你可以任意使用应用内默认主题或任意第三方主题，强大的主题自定义能力</p>
-<p>🖥  你可以自定义源文件夹，利用 OneDrive、百度网盘、iCloud、Dropbox 等进行多设备同步</p>
-<p>🌱 当然 <strong>Gridea</strong> 还很年轻，有很多不足，但请相信，它会不停向前🏃</p>
-<p>未来，它一定会成为你离不开的伙伴</p>
-<p>尽情发挥你的才华吧！</p>
-<p>😘 Enjoy~</p>
+      </a>
+    
+    <div class="content">
+      <a href="https://mylifelog.github.io/post/windows-x64-ping-tai-qt-ji-cheng-grpc-ji-lu/">
+        <h2 class="post-title text-xl font-extrabold mt-5 md:mt-0">windows x64平台qt集成gRPC记录</h2>
+      </a>
+      <div class="post-abstract text-gray-700 font-light my-4">
+        <p>公司的一个项目，为了实现Windows平台跨语言跨进程通信，在初步研究了gRPC、Thrift框架后，因为gRPC采用proto buffers作为通信协议（开源真香），以及Thrift的C++依赖boost过于复杂的原因，决定使用gRPC. 在几经折腾之后，终于成功（2020.5.22）.期间也被很多坑爹教程坑过，现将过程分享如下:</p>
 
-        </div>
+      </div>
+      <div class="text-gray-400 text-sm font-light">2020-05-22 / 19 min read</div>
+    </div>
+  </section>
 
-        
-          <a class="animated fadeInUp p-2 items-center text-sm text-gray-700 border hover:bg-gray-300 leading-none rounded-full flex lg:inline-flex m-4 " href="https://mylifelog.github.io/tag/0fol6LF8h/">
-            <span class="flex-auto">Gridea</span>
-          </a>
-        
-
-
-        <div class="flex justify-between py-8">
-          
-            <div class="prev-post">
-              <a href="https://mylifelog.github.io/post/li-hong-yi-lesslessji-qi-xue-xi-greatergreater-xue-xi-bi-ji-hw1/">
-                <h3 class="post-title">
-                  <i class="remixicon-arrow-left-line"></i>
-                  李宏毅《机器学习》学习笔记 HW1
-                </h3>
-              </a>
-            </div>
-          
-
-          
-        </div>
-
-        
-          
-
-          
-            <link rel="stylesheet" href="https://unpkg.com/disqusjs@1.1/dist/disqusjs.css">
-<script src="https://unpkg.com/disqusjs@1.1/dist/disqus.js"></script>
-
-<div id="disqus_thread"></div>
-
-<script>
-
-var options = {
-  shortname: 'mylifelog-1',
-  apikey: 'IrIfRhSHo9xFZYSdihL549i1IOrJ9mN2VUhMpPpp2ExKlwvFl2lqmOXd6xuot6TU',
-}
-if ('https://blog.discussss.workers.dev/api/') {
-  options.api = 'https://blog.discussss.workers.dev/api/'
-}
-var dsqjs = new DisqusJS(options)
-
-</script>
-
-          
-        
+        <div class="pagination-container animated fadeIn">
+  
+  
+</div>
 
       </div>
     </div>

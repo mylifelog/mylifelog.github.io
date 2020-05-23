@@ -4,7 +4,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>静水流深</title>
 <meta name="description" content="闷声学大习！" />
-<link rel="shortcut icon" href="https://mylifelog.github.io/favicon.ico?v=1590196302472">
+<link rel="shortcut icon" href="https://mylifelog.github.io/favicon.ico?v=1590196528055">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
 <link href="https://cdn.remixicon.com/releases/v1.3.1/remixicon.css" rel="stylesheet">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
@@ -29,7 +29,7 @@
       <div class="flex lg:block p-4 lg:px-0 items-center fixed lg:static lg:block top-0 right-0 left-0 bg-white z-50">
         <i class="remixicon-menu-2-line lg:mt-4 text-2xl cursor-pointer animated fadeIn" onclick="openMenu()"></i>
         <a href="https://mylifelog.github.io">
-          <img class="animated fadeInLeft avatar rounded-lg mx-4 lg:mt-32 lg:mx-0 mt-0 lg:w-24 lg:h-24 w-12 w-12" src="https://mylifelog.github.io/images/avatar.png?v=1590196302472" alt="">
+          <img class="animated fadeInLeft avatar rounded-lg mx-4 lg:mt-32 lg:mx-0 mt-0 lg:w-24 lg:h-24 w-12 w-12" src="https://mylifelog.github.io/images/avatar.png?v=1590196528055" alt="">
         </a>
         <h1 class="animated fadeInLeft lg:text-4xl font-extrabold lg:mt-8 mt-0 text-xl" style="animation-delay: 0.2s">静水流深</h1>
       </div>
@@ -155,7 +155,7 @@ def dJ(theta, X_b, y):
 <h3 id="41-数据部分">4.1 数据部分</h3>
 <p>数据部分，我们使用了每天前的15组数据进行处理，实际上给的数据每个月前20天是连续的，每天24小时也是连续的，那么我们就可以将前一天和后一天凌晨的数据连接起来，进一步扩充数据集，降低损失函数提高精度。</p>
 <h3 id="42-使用adagrad调节学习速率">4.2 使用adagrad调节学习速率</h3>
-<p><img src="https://mylifelog.github.io/post-images/1565783199080.png" alt=""><br>
+<p><img src="https://mylifelog.github.io/post-images/1565783199080.png" alt="" loading="lazy"><br>
 举一个简单的思想：随着次数的增加，通过一些因子来减少学习率。通常刚开始，初始点会距离最低点比较远，所以使用大一点的学习率update好几次参数之后呢，比较靠近最低点了，此时减少学习率比如：<br>
 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><msup><mi>η</mi><mi>t</mi></msup><mo>=</mo><mfrac><msup><mi>η</mi><mi>t</mi></msup><msqrt><mrow><mi>t</mi><mo>+</mo><mn>1</mn></mrow></msqrt></mfrac></mrow><annotation encoding="application/x-tex">\eta^t =\frac{\eta^t}{\sqrt{t+1}}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.9879959999999999em;vertical-align:-0.19444em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.03588em;">η</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.7935559999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">t</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1.5933479999999998em;vertical-align:-0.5379999999999999em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.055348em;"><span style="top:-2.580174em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord sqrt mtight"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.8711800000000001em;"><span class="svg-align" style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mtight" style="padding-left:0.833em;"><span class="mord mathdefault mtight">t</span><span class="mbin mtight">+</span><span class="mord mtight">1</span></span></span><span style="top:-2.83118em;"><span class="pstrut" style="height:3em;"></span><span class="hide-tail mtight" style="min-width:0.853em;height:1.08em;"><svg width='400em' height='1.08em' viewBox='0 0 400000 1080' preserveAspectRatio='xMinYMin slice'><path d='M95,702c-2.7,0,-7.17,-2.7,-13.5,-8c-5.8,-5.3,-9.5,
 -10,-9.5,-14c0,-2,0.3,-3.3,1,-4c1.3,-2.7,23.83,-20.7,67.5,-54c44.2,-33.3,65.8,
@@ -165,9 +165,9 @@ def dJ(theta, X_b, y):
 s-235,486,-235,486c-2.7,4.7,-9,7,-19,7c-6,0,-10,-1,-12,-3s-194,-422,-194,-422
 s-65,47,-65,47z M834 80H400000v40H845z'/></svg></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.16881999999999997em;"><span></span></span></span></span></span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.446108em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mathdefault mtight" style="margin-right:0.03588em;">η</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8703428571428571em;"><span style="top:-2.931em;margin-right:0.07142857142857144em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mathdefault mtight">t</span></span></span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.5379999999999999em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></p>
 <p>学习率不能是一个值通用所有特征，不同的参数需要不同的学习率, adagrad:<br>
-<img src="https://mylifelog.github.io/post-images/1565783451675.png" alt=""><br>
+<img src="https://mylifelog.github.io/post-images/1565783451675.png" alt="" loading="lazy"><br>
 化简之后：<br>
-<img src="https://mylifelog.github.io/post-images/1565783461727.png" alt=""><br>
+<img src="https://mylifelog.github.io/post-images/1565783461727.png" alt="" loading="lazy"><br>
 重点理解，分母二次表示不希望参数变化太过剧烈</p>
 <h3 id="最后附训练测试代码如下">最后，附训练测试代码如下：</h3>
 <pre><code class="language-python">
@@ -238,7 +238,7 @@ for i in range(iteration):
         </div>
 
         
-          <a class="animated fadeInUp p-2 items-center text-sm text-gray-700 border hover:bg-gray-300 leading-none rounded-full flex lg:inline-flex m-4 " href="https://mylifelog.github.io/tag/Wv311xngx">
+          <a class="animated fadeInUp p-2 items-center text-sm text-gray-700 border hover:bg-gray-300 leading-none rounded-full flex lg:inline-flex m-4 " href="https://mylifelog.github.io/tag/Wv311xngx/">
             <span class="flex-auto">机器学习</span>
           </a>
         
@@ -247,7 +247,7 @@ for i in range(iteration):
         <div class="flex justify-between py-8">
           
             <div class="prev-post">
-              <a href="https://mylifelog.github.io/post/android-ndk-ceng-xiao-yan-qian-ming-yi">
+              <a href="https://mylifelog.github.io/post/android-ndk-ceng-xiao-yan-qian-ming-yi/">
                 <h3 class="post-title">
                   <i class="remixicon-arrow-left-line"></i>
                   Android NDK层校验签名（一）
@@ -258,7 +258,7 @@ for i in range(iteration):
 
           
             <div class="next-post">
-              <a href="https://mylifelog.github.io/post/hello-gridea">
+              <a href="https://mylifelog.github.io/post/hello-gridea/">
                 <h3 class="post-title">
                   Hello Gridea
                   <i class="remixicon-arrow-right-line"></i>

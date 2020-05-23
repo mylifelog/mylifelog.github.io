@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://mylifelog.github.io</id>
     <title>静水流深</title>
-    <updated>2020-05-23T01:12:14.001Z</updated>
+    <updated>2020-05-23T01:15:33.276Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://mylifelog.github.io"/>
     <link rel="self" href="https://mylifelog.github.io/atom.xml"/>
@@ -12,8 +12,8 @@
     <rights>All rights reserved 2020, 静水流深</rights>
     <entry>
         <title type="html"><![CDATA[windows x64平台qt集成gRPC记录]]></title>
-        <id>https://mylifelog.github.io/post/windows-x64-ping-tai-qt-ji-cheng-grpc-ji-lu</id>
-        <link href="https://mylifelog.github.io/post/windows-x64-ping-tai-qt-ji-cheng-grpc-ji-lu">
+        <id>https://mylifelog.github.io/post/windows-x64-ping-tai-qt-ji-cheng-grpc-ji-lu/</id>
+        <link href="https://mylifelog.github.io/post/windows-x64-ping-tai-qt-ji-cheng-grpc-ji-lu/">
         </link>
         <updated>2020-05-22T11:40:55.000Z</updated>
         <summary type="html"><![CDATA[<p>公司的一个项目，为了实现Windows平台跨语言跨进程通信，在初步研究了gRPC、Thrift框架后，因为gRPC采用proto buffers作为通信协议（开源真香），以及Thrift的C++依赖boost过于复杂的原因，决定使用gRPC. 在几经折腾之后，终于成功（2020.5.22）.期间也被很多坑爹教程坑过，现将过程分享如下:</p>
@@ -32,7 +32,7 @@ github clone vcpkg 编译生成vcpkg.exe</p>
 set https_proxy=http://x.x.x.x:1081 
 </code></pre>
 <p>下载好之后会将grpc相关保存到vcpkg的\installed\x64-windows目录如图：<br>
-<img src="https://mylifelog.github.io/post-images/1590150890015.PNG" alt=""></p>
+<img src="https://mylifelog.github.io/post-images/1590150890015.PNG" alt="" loading="lazy"></p>
 <p>其中，include文件夹是需要qt项目引入的所有头文件，lib文件夹是需要引入的静态文件，tools下面的protobuf和grpc是生成的exe文件，主要用途是将.proto转为某种语言的代码。将这两个文件的exe放到一起，方便使用。</p>
 <h2 id="3编译proto文件生成cppcsharppython三种为例">3.编译proto文件(生成cpp,csharp,python三种为例)：</h2>
 <p>将第2步的exe放到一起后，新建cpp,csharp,python文件夹。新建bat文件，添加如下内容：</p>
@@ -44,7 +44,7 @@ protoc -I ./ --grpc_out=./python --plugin=protoc-gen-grpc=./grpc_python_plugin.e
 protoc -I ./ --python_out=./python ./*.proto
 </code></pre>
 <p>将.proto文件拷至该文件夹，执行bat文件可在对应子文件夹生成对应的代码。<br>
-<img src="https://mylifelog.github.io/post-images/1590150782709.PNG" alt=""></p>
+<img src="https://mylifelog.github.io/post-images/1590150782709.PNG" alt="" loading="lazy"></p>
 <p>将生成的cpp代码h代码和实例项目的client或者server的代码修改后拷贝到qt项目中。</p>
 <h2 id="4复制文件到qt项目">4.复制文件到QT项目：</h2>
 <p>将第1步得到的include文件夹拷贝到qt项目文件夹<br>
@@ -480,8 +480,8 @@ else:win32-g++: PRE_TARGETDEPS += 'C:/Program Files (x86)/Windows Kits/10/Lib/10
     </entry>
     <entry>
         <title type="html"><![CDATA[李宏毅《机器学习》学习笔记 HW2（二）]]></title>
-        <id>https://mylifelog.github.io/post/li-hong-yi-lesslessji-qi-xue-xi-greatergreater-xue-xi-bi-ji-hw2er</id>
-        <link href="https://mylifelog.github.io/post/li-hong-yi-lesslessji-qi-xue-xi-greatergreater-xue-xi-bi-ji-hw2er">
+        <id>https://mylifelog.github.io/post/li-hong-yi-lesslessji-qi-xue-xi-greatergreater-xue-xi-bi-ji-hw2er/</id>
+        <link href="https://mylifelog.github.io/post/li-hong-yi-lesslessji-qi-xue-xi-greatergreater-xue-xi-bi-ji-hw2er/">
         </link>
         <updated>2019-11-06T07:59:59.000Z</updated>
         <summary type="html"><![CDATA[<h2 id="1作业内容">1.作业内容：</h2>
@@ -501,11 +501,11 @@ else:win32-g++: PRE_TARGETDEPS += 'C:/Program Files (x86)/Windows Kits/10/Lib/10
 本文主要讲使用逻辑回归模型求解的过程。</p>
 <h2 id="3原理">3.原理：</h2>
 <p>由上一篇最后的推导得出：<br>
-<img src="https://mylifelog.github.io/post-images/1573027245214.PNG" alt=""><br>
+<img src="https://mylifelog.github.io/post-images/1573027245214.PNG" alt="" loading="lazy"><br>
 可见，概率模型可以由sigma函数包裹的线性函数来表示：<br>
-<img src="https://mylifelog.github.io/post-images/1573027382557.png" alt=""><br>
+<img src="https://mylifelog.github.io/post-images/1573027382557.png" alt="" loading="lazy"><br>
 将函数集可视化：<br>
-<img src="https://mylifelog.github.io/post-images/1573027421494.png" alt=""><br>
+<img src="https://mylifelog.github.io/post-images/1573027421494.png" alt="" loading="lazy"><br>
 这种函数集的分类问题叫做 Logistic Regression（逻辑回归）</p>
 <h2 id="4求解过程">4.求解过程：</h2>
 <pre><code class="language-Python"># -*- coding: UTF-8 -*-
@@ -673,8 +673,8 @@ for i in range(iteration):
     </entry>
     <entry>
         <title type="html"><![CDATA[李宏毅《机器学习》学习笔记 HW2（一）]]></title>
-        <id>https://mylifelog.github.io/post/li-hong-yi-lesslessji-qi-xue-xi-greatergreater-xue-xi-bi-ji-hw2</id>
-        <link href="https://mylifelog.github.io/post/li-hong-yi-lesslessji-qi-xue-xi-greatergreater-xue-xi-bi-ji-hw2">
+        <id>https://mylifelog.github.io/post/li-hong-yi-lesslessji-qi-xue-xi-greatergreater-xue-xi-bi-ji-hw2/</id>
+        <link href="https://mylifelog.github.io/post/li-hong-yi-lesslessji-qi-xue-xi-greatergreater-xue-xi-bi-ji-hw2/">
         </link>
         <updated>2019-09-30T09:58:18.000Z</updated>
         <summary type="html"><![CDATA[<h2 id="1作业内容">1.作业内容：</h2>
@@ -697,29 +697,29 @@ for i in range(iteration):
 假设两个盒子，各装了5个球，还得知随机抽一个球，抽到的是盒子1的球的概率是 2/3，是盒子2的球的概率是1/3。从盒子中蓝色球和绿色球的分配可以得到：</p>
 <p>在盒子1中随机抽一个球，是蓝色的概率为 4/5，绿的的概率为 1/5<br>
 在盒子2中随机抽一个球，是蓝色的概率为 2/5，绿的的概率为 3/5<br>
-<img src="https://mylifelog.github.io/post-images/1569840020763.png" alt=""><br>
+<img src="https://mylifelog.github.io/post-images/1569840020763.png" alt="" loading="lazy"><br>
 所以，从两个盒子中抽到一个蓝色球，属于盒子1中蓝色球的概率是：<br>
 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>P</mi><mo>(</mo><msub><mi>B</mi><mn>1</mn></msub><mi mathvariant="normal">∣</mi><mi>B</mi><mi>l</mi><mi>u</mi><mi>e</mi><mo>)</mo><mo>=</mo><mfrac><mrow><mi>P</mi><mo>(</mo><mi>B</mi><mi>l</mi><mi>u</mi><mi>e</mi><mi mathvariant="normal">∣</mi><msub><mi>B</mi><mn>1</mn></msub><mo>)</mo><mi>P</mi><mo>(</mo><msub><mi>B</mi><mn>1</mn></msub><mo>)</mo></mrow><mrow><mi>P</mi><mo>(</mo><mi>B</mi><mi>l</mi><mi>u</mi><mi>e</mi><mi mathvariant="normal">∣</mi><msub><mi>B</mi><mn>1</mn></msub><mo>)</mo><mi>P</mi><mo>(</mo><msub><mi>B</mi><mn>1</mn></msub><mo>)</mo><mo>+</mo><mi>P</mi><mo>(</mo><mi>B</mi><mi>l</mi><mi>u</mi><mi>e</mi><mi mathvariant="normal">∣</mi><msub><mi>B</mi><mn>2</mn></msub><mo>)</mo><mi>P</mi><mo>(</mo><msub><mi>B</mi><mn>2</mn></msub><mo>)</mo></mrow></mfrac><mo>=</mo><mfrac><mn>4</mn><mn>5</mn></mfrac></mrow><annotation encoding="application/x-tex">P(B_{1}|Blue)=\frac {P(Blue|B_{1})P(B_{1})}{P(Blue|B_{1})P(B_{1})+P(Blue|B_{2})P(B_{2})} = \frac{4}{5}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.13889em;">P</span><span class="mopen">(</span><span class="mord"><span class="mord mathdefault" style="margin-right:0.05017em;">B</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.05017em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord">∣</span><span class="mord mathdefault" style="margin-right:0.05017em;">B</span><span class="mord mathdefault" style="margin-right:0.01968em;">l</span><span class="mord mathdefault">u</span><span class="mord mathdefault">e</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1.53em;vertical-align:-0.52em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.01em;"><span style="top:-2.655em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight" style="margin-right:0.13889em;">P</span><span class="mopen mtight">(</span><span class="mord mathdefault mtight" style="margin-right:0.05017em;">B</span><span class="mord mathdefault mtight" style="margin-right:0.01968em;">l</span><span class="mord mathdefault mtight">u</span><span class="mord mathdefault mtight">e</span><span class="mord mtight">∣</span><span class="mord mtight"><span class="mord mathdefault mtight" style="margin-right:0.05017em;">B</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31731428571428577em;"><span style="top:-2.357em;margin-left:-0.05017em;margin-right:0.07142857142857144em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight"><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.143em;"><span></span></span></span></span></span></span><span class="mclose mtight">)</span><span class="mord mathdefault mtight" style="margin-right:0.13889em;">P</span><span class="mopen mtight">(</span><span class="mord mtight"><span class="mord mathdefault mtight" style="margin-right:0.05017em;">B</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31731428571428577em;"><span style="top:-2.357em;margin-left:-0.05017em;margin-right:0.07142857142857144em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight"><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.143em;"><span></span></span></span></span></span></span><span class="mclose mtight">)</span><span class="mbin mtight">+</span><span class="mord mathdefault mtight" style="margin-right:0.13889em;">P</span><span class="mopen mtight">(</span><span class="mord mathdefault mtight" style="margin-right:0.05017em;">B</span><span class="mord mathdefault mtight" style="margin-right:0.01968em;">l</span><span class="mord mathdefault mtight">u</span><span class="mord mathdefault mtight">e</span><span class="mord mtight">∣</span><span class="mord mtight"><span class="mord mathdefault mtight" style="margin-right:0.05017em;">B</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31731428571428577em;"><span style="top:-2.357em;margin-left:-0.05017em;margin-right:0.07142857142857144em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight"><span class="mord mtight">2</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.143em;"><span></span></span></span></span></span></span><span class="mclose mtight">)</span><span class="mord mathdefault mtight" style="margin-right:0.13889em;">P</span><span class="mopen mtight">(</span><span class="mord mtight"><span class="mord mathdefault mtight" style="margin-right:0.05017em;">B</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31731428571428577em;"><span style="top:-2.357em;margin-left:-0.05017em;margin-right:0.07142857142857144em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight"><span class="mord mtight">2</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.143em;"><span></span></span></span></span></span></span><span class="mclose mtight">)</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.485em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight" style="margin-right:0.13889em;">P</span><span class="mopen mtight">(</span><span class="mord mathdefault mtight" style="margin-right:0.05017em;">B</span><span class="mord mathdefault mtight" style="margin-right:0.01968em;">l</span><span class="mord mathdefault mtight">u</span><span class="mord mathdefault mtight">e</span><span class="mord mtight">∣</span><span class="mord mtight"><span class="mord mathdefault mtight" style="margin-right:0.05017em;">B</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31731428571428577em;"><span style="top:-2.357em;margin-left:-0.05017em;margin-right:0.07142857142857144em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight"><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.143em;"><span></span></span></span></span></span></span><span class="mclose mtight">)</span><span class="mord mathdefault mtight" style="margin-right:0.13889em;">P</span><span class="mopen mtight">(</span><span class="mord mtight"><span class="mord mathdefault mtight" style="margin-right:0.05017em;">B</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31731428571428577em;"><span style="top:-2.357em;margin-left:-0.05017em;margin-right:0.07142857142857144em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight"><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.143em;"><span></span></span></span></span></span></span><span class="mclose mtight">)</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.52em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1.190108em;vertical-align:-0.345em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.845108em;"><span style="top:-2.6550000000000002em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">5</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.394em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">4</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.345em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span><br>
 相当于两个类别中抽到一个<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>x</mi></mrow><annotation encoding="application/x-tex">x</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathdefault">x</span></span></span></span>,抽到的是类别1中的<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>x</mi></mrow><annotation encoding="application/x-tex">x</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathdefault">x</span></span></span></span>的概率是<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mfrac><mn>4</mn><mn>5</mn></mfrac></mrow><annotation encoding="application/x-tex">\frac{4}{5}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.190108em;vertical-align:-0.345em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.845108em;"><span style="top:-2.6550000000000002em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">5</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.394em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">4</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.345em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span>，即可以给出一个<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>x</mi></mrow><annotation encoding="application/x-tex">x</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathdefault">x</span></span></span></span>，我们计算<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>P</mi><mo>(</mo><msub><mi>C</mi><mn>1</mn></msub><mi mathvariant="normal">∣</mi><mi>x</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">P(C_{1}|x)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.13889em;">P</span><span class="mopen">(</span><span class="mord"><span class="mord mathdefault" style="margin-right:0.07153em;">C</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.07153em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord">∣</span><span class="mord mathdefault">x</span><span class="mclose">)</span></span></span></span>和<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>P</mi><mo>(</mo><msub><mi>C</mi><mn>2</mn></msub><mi mathvariant="normal">∣</mi><mi>x</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">P(C_{2}|x)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.13889em;">P</span><span class="mopen">(</span><span class="mord"><span class="mord mathdefault" style="margin-right:0.07153em;">C</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.07153em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">2</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord">∣</span><span class="mord mathdefault">x</span><span class="mclose">)</span></span></span></span>，哪个大就属于哪个类别。</p>
 <p><strong>高斯分布</strong><br>
 对于实际任务中，训练的数据常常有多个属性，各属性间可能还存在这一定的关联，那么我们就可以用多元正态分布，即高斯分布来描述数据的分布情况：输入就是一个向量<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>x</mi></mrow><annotation encoding="application/x-tex">x</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathdefault">x</span></span></span></span>, 输出就是选中<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>x</mi></mrow><annotation encoding="application/x-tex">x</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathdefault">x</span></span></span></span>的概率（实际上高斯分布不等于概率，只是和概率成正比，这里简单说成概率）。<br>
-<img src="https://mylifelog.github.io/post-images/1569841337773.png" alt=""><br>
+<img src="https://mylifelog.github.io/post-images/1569841337773.png" alt="" loading="lazy"><br>
 高斯分布由期望<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>μ</mi></mrow><annotation encoding="application/x-tex">\mu</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.19444em;"></span><span class="mord mathdefault">μ</span></span></span></span>和协方差矩阵<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mo>∑</mo></mrow><annotation encoding="application/x-tex">\sum</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.00001em;vertical-align:-0.25001em;"></span><span class="mop op-symbol small-op" style="position:relative;top:-0.0000050000000000050004em;">∑</span></span></span></span>决定。上图的例子是说同样的<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mo>∑</mo></mrow><annotation encoding="application/x-tex">\sum</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.00001em;vertical-align:-0.25001em;"></span><span class="mop op-symbol small-op" style="position:relative;top:-0.0000050000000000050004em;">∑</span></span></span></span>，不同的<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>μ</mi></mrow><annotation encoding="application/x-tex">\mu</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.19444em;"></span><span class="mord mathdefault">μ</span></span></span></span>，概率分布的最高点的位置是不同的。<br>
 下图的例子是同样的<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>μ</mi></mrow><annotation encoding="application/x-tex">\mu</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.19444em;"></span><span class="mord mathdefault">μ</span></span></span></span>，不同的<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mo>∑</mo></mrow><annotation encoding="application/x-tex">\sum</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.00001em;vertical-align:-0.25001em;"></span><span class="mop op-symbol small-op" style="position:relative;top:-0.0000050000000000050004em;">∑</span></span></span></span>，概率分布的最高点是一样的，但是离散度是不一样的。<br>
-<img src="https://mylifelog.github.io/post-images/1569841353730.png" alt=""><br>
+<img src="https://mylifelog.github.io/post-images/1569841353730.png" alt="" loading="lazy"><br>
 假设通过79个点估测出了期望<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>μ</mi></mrow><annotation encoding="application/x-tex">\mu</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.19444em;"></span><span class="mord mathdefault">μ</span></span></span></span>和协方差矩阵<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mo>∑</mo></mrow><annotation encoding="application/x-tex">\sum</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.00001em;vertical-align:-0.25001em;"></span><span class="mop op-symbol small-op" style="position:relative;top:-0.0000050000000000050004em;">∑</span></span></span></span>。期望是图中的黄色点，协方差矩阵是红色的范围。<br>
-<img src="https://mylifelog.github.io/post-images/1569841432066.png" alt=""><br>
+<img src="https://mylifelog.github.io/post-images/1569841432066.png" alt="" loading="lazy"><br>
 现在给一个不在79个点之内的新点，即可以用刚才估测出的期望和协方差矩阵写出高斯分布来计算这个新点和这79个点属于同一类别的概率。这里，我们可以使用最大似然估计计算这79个点的期望和协方差矩阵：<br>
-<img src="https://mylifelog.github.io/post-images/1569841761284.png" alt=""></p>
+<img src="https://mylifelog.github.io/post-images/1569841761284.png" alt="" loading="lazy"></p>
 <h2 id="4求解过程">4.求解过程：</h2>
 <h3 id="41-模型套用">4.1 模型套用</h3>
 <p>作业中数据分为X和Y，每一笔X代表一个人，对应的Y代表这个人年薪是否超过50k。<br>
 我们根据Y为0或1即可将数据分为两类，简称Class1和Class2。用第2部分的最大似然估计分别求出Class1的期望向量和协方差矩阵，进行建模。<br>
 那么对于每一笔测试数据，便可通过模型计算出其属于Class1的概率，如果<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>P</mi><mo>&gt;</mo><mn>0.5</mn></mrow><annotation encoding="application/x-tex">P&gt;0.5</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.72243em;vertical-align:-0.0391em;"></span><span class="mord mathdefault" style="margin-right:0.13889em;">P</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">&gt;</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">0</span><span class="mord">.</span><span class="mord">5</span></span></span></span>那么属于Class1，否则属于Class2</p>
 <p>但是课程中老师对猜测水性神奇宝可梦的例子使用该方法后，效果不好，准确率只有54%，然后又进行了一步优化。通常来说，不会给每个高斯分布都计算出一套不同的最大似然估计，协方差矩阵是和输入feature大小的平方成正比，所以当feature很大的时候，协方差矩阵是可以增长很快的。此时考虑到model参数过多，容易Overfitting，为了有效减少参数，给描述这两个类别的高斯分布相同的协方差矩阵。<br>
-<img src="https://mylifelog.github.io/post-images/1573022997903.png" alt=""><br>
+<img src="https://mylifelog.github.io/post-images/1573022997903.png" alt="" loading="lazy"><br>
 在相同协方差的基础上进行数学推导，最终得到：<br>
-<img src="https://mylifelog.github.io/post-images/1573023372408.PNG" alt=""><br>
+<img src="https://mylifelog.github.io/post-images/1573023372408.PNG" alt="" loading="lazy"><br>
 根据这个结果我们便可以进行概率计算</p>
 <h3 id="42-计算过程">4.2 计算过程</h3>
 <p>代码如下</p>
@@ -863,8 +863,8 @@ if __name__ == '__main__':
     </entry>
     <entry>
         <title type="html"><![CDATA[Android NDK层校验APK文件MD5]]></title>
-        <id>https://mylifelog.github.io/post/android-ndk-ceng-xiao-yan-apk-wen-jian-md5</id>
-        <link href="https://mylifelog.github.io/post/android-ndk-ceng-xiao-yan-apk-wen-jian-md5">
+        <id>https://mylifelog.github.io/post/android-ndk-ceng-xiao-yan-apk-wen-jian-md5/</id>
+        <link href="https://mylifelog.github.io/post/android-ndk-ceng-xiao-yan-apk-wen-jian-md5/">
         </link>
         <updated>2019-09-09T01:54:53.000Z</updated>
         <summary type="html"><![CDATA[<p>除了校验证书，我们还可以校验Apk文件的md5值，进一步增加App的安全性。具体思路是通过jni接口从网络获取我们发布版的md5值，然后在native层进行比对校验。</p>
@@ -963,8 +963,8 @@ char *pathHelperGetPath() {
     </entry>
     <entry>
         <title type="html"><![CDATA[ Android NDK层校验签名（二）]]></title>
-        <id>https://mylifelog.github.io/post/android-ndk-ceng-xiao-yan-qian-ming-er</id>
-        <link href="https://mylifelog.github.io/post/android-ndk-ceng-xiao-yan-qian-ming-er">
+        <id>https://mylifelog.github.io/post/android-ndk-ceng-xiao-yan-qian-ming-er/</id>
+        <link href="https://mylifelog.github.io/post/android-ndk-ceng-xiao-yan-qian-ming-er/">
         </link>
         <updated>2019-09-09T01:30:03.000Z</updated>
         <summary type="html"><![CDATA[<p>针对kstools和MT管理器等破坏我们签名校验的手段，我们需要采取新的措施。这些方法的原理都是hook应用的pms服务，拦截其获取真正签名的方法，然后返回让我们误以为真的签名信息。</p>
@@ -1960,8 +1960,8 @@ void getApkSignMD5(char* apkPath, char* result)
     </entry>
     <entry>
         <title type="html"><![CDATA[Android NDK层校验签名（一）]]></title>
-        <id>https://mylifelog.github.io/post/android-ndk-ceng-xiao-yan-qian-ming-yi</id>
-        <link href="https://mylifelog.github.io/post/android-ndk-ceng-xiao-yan-qian-ming-yi">
+        <id>https://mylifelog.github.io/post/android-ndk-ceng-xiao-yan-qian-ming-yi/</id>
+        <link href="https://mylifelog.github.io/post/android-ndk-ceng-xiao-yan-qian-ming-yi/">
         </link>
         <updated>2019-09-09T01:07:49.000Z</updated>
         <summary type="html"><![CDATA[<p>为防止别有用心的人将我们的apk文件修改后重新发布，我们需要对apk文件的证书进行校验。</p>
@@ -2044,8 +2044,8 @@ void getApkSignMD5(char* apkPath, char* result)
     </entry>
     <entry>
         <title type="html"><![CDATA[李宏毅《机器学习》学习笔记 HW1]]></title>
-        <id>https://mylifelog.github.io/post/li-hong-yi-lesslessji-qi-xue-xi-greatergreater-xue-xi-bi-ji-hw1</id>
-        <link href="https://mylifelog.github.io/post/li-hong-yi-lesslessji-qi-xue-xi-greatergreater-xue-xi-bi-ji-hw1">
+        <id>https://mylifelog.github.io/post/li-hong-yi-lesslessji-qi-xue-xi-greatergreater-xue-xi-bi-ji-hw1/</id>
+        <link href="https://mylifelog.github.io/post/li-hong-yi-lesslessji-qi-xue-xi-greatergreater-xue-xi-bi-ji-hw1/">
         </link>
         <updated>2019-08-14T09:41:49.000Z</updated>
         <summary type="html"><![CDATA[<h2 id="1作业内容">1.作业内容：</h2>
@@ -2092,7 +2092,7 @@ def dJ(theta, X_b, y):
 <h3 id="41-数据部分">4.1 数据部分</h3>
 <p>数据部分，我们使用了每天前的15组数据进行处理，实际上给的数据每个月前20天是连续的，每天24小时也是连续的，那么我们就可以将前一天和后一天凌晨的数据连接起来，进一步扩充数据集，降低损失函数提高精度。</p>
 <h3 id="42-使用adagrad调节学习速率">4.2 使用adagrad调节学习速率</h3>
-<p><img src="https://mylifelog.github.io/post-images/1565783199080.png" alt=""><br>
+<p><img src="https://mylifelog.github.io/post-images/1565783199080.png" alt="" loading="lazy"><br>
 举一个简单的思想：随着次数的增加，通过一些因子来减少学习率。通常刚开始，初始点会距离最低点比较远，所以使用大一点的学习率update好几次参数之后呢，比较靠近最低点了，此时减少学习率比如：<br>
 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><msup><mi>η</mi><mi>t</mi></msup><mo>=</mo><mfrac><msup><mi>η</mi><mi>t</mi></msup><msqrt><mrow><mi>t</mi><mo>+</mo><mn>1</mn></mrow></msqrt></mfrac></mrow><annotation encoding="application/x-tex">\eta^t =\frac{\eta^t}{\sqrt{t+1}}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.9879959999999999em;vertical-align:-0.19444em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.03588em;">η</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.7935559999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">t</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1.5933479999999998em;vertical-align:-0.5379999999999999em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.055348em;"><span style="top:-2.580174em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord sqrt mtight"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.8711800000000001em;"><span class="svg-align" style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mtight" style="padding-left:0.833em;"><span class="mord mathdefault mtight">t</span><span class="mbin mtight">+</span><span class="mord mtight">1</span></span></span><span style="top:-2.83118em;"><span class="pstrut" style="height:3em;"></span><span class="hide-tail mtight" style="min-width:0.853em;height:1.08em;"><svg width='400em' height='1.08em' viewBox='0 0 400000 1080' preserveAspectRatio='xMinYMin slice'><path d='M95,702c-2.7,0,-7.17,-2.7,-13.5,-8c-5.8,-5.3,-9.5,
 -10,-9.5,-14c0,-2,0.3,-3.3,1,-4c1.3,-2.7,23.83,-20.7,67.5,-54c44.2,-33.3,65.8,
@@ -2102,9 +2102,9 @@ def dJ(theta, X_b, y):
 s-235,486,-235,486c-2.7,4.7,-9,7,-19,7c-6,0,-10,-1,-12,-3s-194,-422,-194,-422
 s-65,47,-65,47z M834 80H400000v40H845z'/></svg></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.16881999999999997em;"><span></span></span></span></span></span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.446108em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mathdefault mtight" style="margin-right:0.03588em;">η</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8703428571428571em;"><span style="top:-2.931em;margin-right:0.07142857142857144em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mathdefault mtight">t</span></span></span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.5379999999999999em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></p>
 <p>学习率不能是一个值通用所有特征，不同的参数需要不同的学习率, adagrad:<br>
-<img src="https://mylifelog.github.io/post-images/1565783451675.png" alt=""><br>
+<img src="https://mylifelog.github.io/post-images/1565783451675.png" alt="" loading="lazy"><br>
 化简之后：<br>
-<img src="https://mylifelog.github.io/post-images/1565783461727.png" alt=""><br>
+<img src="https://mylifelog.github.io/post-images/1565783461727.png" alt="" loading="lazy"><br>
 重点理解，分母二次表示不希望参数变化太过剧烈</p>
 <h3 id="最后附训练测试代码如下">最后，附训练测试代码如下：</h3>
 <pre><code class="language-python">
@@ -2175,8 +2175,8 @@ for i in range(iteration):
     </entry>
     <entry>
         <title type="html"><![CDATA[Hello Gridea]]></title>
-        <id>https://mylifelog.github.io/post/hello-gridea</id>
-        <link href="https://mylifelog.github.io/post/hello-gridea">
+        <id>https://mylifelog.github.io/post/hello-gridea/</id>
+        <link href="https://mylifelog.github.io/post/hello-gridea/">
         </link>
         <updated>2018-12-11T16:00:00.000Z</updated>
         <summary type="html"><![CDATA[<p>👏  欢迎使用 <strong>Gridea</strong> ！<br>
